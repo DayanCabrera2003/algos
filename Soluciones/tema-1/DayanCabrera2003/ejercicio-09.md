@@ -60,7 +60,7 @@ La mezcla normal hace $`2n-1`$ en esta entrada (C5 §6). La variante ahorra *un
 
 ## Sin probarla: la cota de C5 §6 dice que está mal
 
-El teorema de C5 §6 dice: *mezclar dos listas ordenadas de largo $`n`$ requiere $`2n-1`$ comparaciones en el peor caso*, en el modelo de comparaciones. La variante es un algoritmo de comparaciones (solo compara elementos de $`A`$ con elementos de $`B`$) y, por el teorema <a href="#teo:peor" data-reference-type="ref" data-reference="teo:peor">1</a>, hace a lo sumo $`2n-2<2n-1`$ comparaciones en *todas* las entradas. Entonces **no puede ser correcta**: ningún algoritmo correcto puede hacer menos que la cota. Esta conclusión no usó ninguna ejecución.
+El teorema de C5 §6 dice: *mezclar dos listas ordenadas de largo $`n`$ requiere $`2n-1`$ comparaciones en el peor caso*, en el modelo de comparaciones. La variante es un algoritmo de comparaciones (solo compara elementos de $`A`$ con elementos de $`B`$) y, por el teorema 1, hace a lo sumo $`2n-2<2n-1`$ comparaciones en *todas* las entradas. Entonces **no puede ser correcta**: ningún algoritmo correcto puede hacer menos que la cota. Esta conclusión no usó ninguna ejecución.
 
 La demostración de C5 §6 dice además *dónde* falla. El adversario contesta como si la entrada fuera la intercalada perfecta, que tiene $`2n-1`$ pares de vecinos. La variante compara a lo sumo $`2n-2`$ de ellos, así que deja alguno sin comparar. Si intercambiamos los valores de los dos elementos de ese par, las dos listas siguen ordenadas (son vecinos en la cadena y nada queda entre ellos), todas las comparaciones hechas dan la misma respuesta, y la salida correcta cambió. La variante da la misma salida para las dos entradas, así que se equivoca en una.
 
@@ -100,7 +100,7 @@ Con $`n=1`$ la regla dice: falla si $`a<b`$, como en el caso de borde de la secc
 
 **Qué ven las pruebas al azar.**
 
-Con dos listas ordenadas elegidas al azar, el máximo de los $`2n`$ está en $`B`$ con probabilidad exactamente $`n/2n=1/2`$. El programa lo cuenta de forma exhaustiva: de las $`\binom{2n}{n}`$ entradas posibles, la variante falla en $`\binom{2n-1}{n}=\tfrac12\binom{2n}{n}`$ (salida 4, $`n\le8`$), y la regla del teorema <a href="#teo:falla" data-reference-type="ref" data-reference="teo:falla">2</a> se verifica con `assert` en todas. Al azar (salida 5):
+Con dos listas ordenadas elegidas al azar, el máximo de los $`2n`$ está en $`B`$ con probabilidad exactamente $`n/2n=1/2`$. El programa lo cuenta de forma exhaustiva: de las $`\binom{2n}{n}`$ entradas posibles, la variante falla en $`\binom{2n-1}{n}=\tfrac12\binom{2n}{n}`$ (salida 4, $`n\le8`$), y la regla del teorema 2 se verifica con `assert` en todas. Al azar (salida 5):
 
 | $`n`$ | pruebas | fallos medidos |  exacta |
 |------:|--------:|---------------:|--------:|
@@ -127,8 +127,107 @@ Una batería que pruebe la mezcla con listas “crecientes por bloques” ($`B<A
 
 Código: `ej09_mezcla.py`. Corre la variante y la mezcla normal contando las comparaciones y registrando los pares comparados, sobre todas las entradas de $`2n`$ valores distintos con $`n\le8`$ (las $`\binom{2n}{n}`$ particiones) y sobre las dos intercaladas. Salida real:
 
-``` default
+<details>
+<summary><code>ej09_salida.txt</code></summary>
+
+```text
+=== 1. Especificacion en codigo y casos de borde ===
+  mientras len(A)-i >= 2 y j < len(B): comparar;  al salir: R += B[j:] + A[i:]
+  n=1, A=[5], B=[3]                variante: [3, 5] (0 comp.)   normal: [3, 5] (1 comp.)   correcta: True
+  n=1, A=[3], B=[5]                variante: [5, 3] (0 comp.)   normal: [3, 5] (1 comp.)   correcta: False
+  B no se agota antes: A < B       variante: [1, 3, 4, 2] (1 comp.)   normal: [1, 2, 3, 4] (2 comp.)   correcta: False
+  B se agota antes: B < A          variante: [1, 2, 3, 4] (2 comp.)   normal: [1, 2, 3, 4] (2 comp.)   correcta: True
+  B vacia, A con un elemento       variante: [2] (0 comp.)   normal: [2] (0 comp.)   correcta: True
+  A vacia                          variante: [1, 2] (0 comp.)   normal: [1, 2] (0 comp.)   correcta: True
+
+=== 2. Peor caso EXACTO de comparaciones, sobre TODAS las entradas ===
+   n  entradas  variante: max  2n-2  normal: max  2n-1  entrada que alcanza 2n-2 (primera)
+   1         2              0     0            1     1  A=[0] B=[1]
+   2         6              2     2            3     3  A=[1, 2] B=[0, 3]
+   3        20              4     4            5     5  A=[0, 3, 4] B=[1, 2, 5]
+   4        70              6     6            7     7  A=[0, 1, 5, 6] B=[2, 3, 4, 7]
+   5       252              8     8            9     9  A=[0, 1, 2, 7, 8] B=[3, 4, 5, 6, 9]
+   6       924             10    10           11    11  A=[0, 1, 2, 3, 9, 10] B=[4, 5, 6, 7, 8, 11]
+   7      3432             12    12           13    13  A=[0, 1, 2, 3, 4, 11, 12] B=[5, 6, 7, 8, 9, 10, 13]
+   8     12870             14    14           15    15  A=[0, 1, 2, 3, 4, 5, 13, 14] B=[6, 7, 8, 9, 10, 11, 12, 15]
+
+=== 3. Las dos intercaladas del adversario, n = 5 ===
+  a-primero: a1 < b1 < a2 < b2 < a3 < b3 < a4 < b4 < a5 < b5
+    A = [1, 3, 5, 7, 9]  B = [2, 4, 6, 8, 10]
+    variante: 7 comparaciones (de 9 pares vecinos), salida [1, 2, 3, 4, 5, 6, 7, 8, 10, 9]  correcta: False
+    normal:   9 comparaciones, salida correcta: True
+    pares vecinos NUNCA comparados: [('a5', 'b4'), ('a5', 'b5')]
+    intercambio a5<->b4: A=[1, 3, 5, 7, 8] B=[2, 4, 6, 9, 10]
+      misma transcripcion de respuestas: True; misma salida como orden de casillas: True
+      salida con valores: [1, 2, 3, 4, 5, 6, 7, 9, 10, 8] (original: [1, 2, 3, 4, 5, 6, 7, 8, 10, 9]) -> correcta en la original: False, en la intercambiada: False
+    intercambio a5<->b5: A=[1, 3, 5, 7, 10] B=[2, 4, 6, 8, 9]
+      misma transcripcion de respuestas: True; misma salida como orden de casillas: True
+      salida con valores: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] (original: [1, 2, 3, 4, 5, 6, 7, 8, 10, 9]) -> correcta en la original: False, en la intercambiada: True
+  b-primero: b1 < a1 < b2 < a2 < b3 < a3 < b4 < a4 < b5 < a5
+    A = [2, 4, 6, 8, 10]  B = [1, 3, 5, 7, 9]
+    variante: 8 comparaciones (de 9 pares vecinos), salida [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  correcta: True
+    normal:   9 comparaciones, salida correcta: True
+    pares vecinos NUNCA comparados: [('a5', 'b5')]
+    intercambio a5<->b5: A=[2, 4, 6, 8, 9] B=[1, 3, 5, 7, 10]
+      misma transcripcion de respuestas: True; misma salida como orden de casillas: True
+      salida con valores: [1, 2, 3, 4, 5, 6, 7, 8, 10, 9] (original: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) -> correcta en la original: True, en la intercambiada: False
+
+=== 4. Cuando falla: exactamente cuando el maximo de los 2n esta en B (b_n > a_n) ===
+  n=1: 2 entradas, la variante falla en 1 = C(2n-1,n) = la mitad exacta; falla <=> b_n > a_n (assert)
+  n=2: 6 entradas, la variante falla en 3 = C(2n-1,n) = la mitad exacta; falla <=> b_n > a_n (assert)
+  n=3: 20 entradas, la variante falla en 10 = C(2n-1,n) = la mitad exacta; falla <=> b_n > a_n (assert)
+  n=4: 70 entradas, la variante falla en 35 = C(2n-1,n) = la mitad exacta; falla <=> b_n > a_n (assert)
+  n=5: 252 entradas, la variante falla en 126 = C(2n-1,n) = la mitad exacta; falla <=> b_n > a_n (assert)
+  n=6: 924 entradas, la variante falla en 462 = C(2n-1,n) = la mitad exacta; falla <=> b_n > a_n (assert)
+  n=7: 3432 entradas, la variante falla en 1716 = C(2n-1,n) = la mitad exacta; falla <=> b_n > a_n (assert)
+  n=8: 12870 entradas, la variante falla en 6435 = C(2n-1,n) = la mitad exacta; falla <=> b_n > a_n (assert)
+
+=== 5. Pruebas al azar: frecuencia de fallo contra la probabilidad exacta (1/2) ===
+      n  pruebas   fallos   exacta
+      2    20000   49.09%   50.00%
+      4    20000   50.35%   50.00%
+     16    20000   49.74%   50.00%
+     64    20000   49.58%   50.00%
+   1024     4000   50.77%   50.00%
+
+  Por generador (n = 16, 2000 entradas; las intercaladas y las separadas son deterministas):
+    aleatoria (todas las particiones)                              falla en  50.8%
+    intercalada a1<b1<a2<...                                       falla en 100.0%
+    intercalada b1<a1<b2<... (la del adversario, pegada al reves)  falla en   0.0%
+    A entera menor que B                                           falla en 100.0%
+    B entera menor que A                                           falla en   0.0%
+    A con el maximo plantado                                       falla en   0.0%
+
+=== 6. Informacion: log2 C(2n,n) contra el peor caso de la variante (2n-2) ===
+     n  log2 C(2n,n)  ceil  2n-2  2n-1  la informacion sola refuta a la variante?
+     1          1.00     1     0     1  SI (2n-2 < ceil(info))
+     2          2.58     3     2     3  SI (2n-2 < ceil(info))
+     3          4.32     5     4     5  SI (2n-2 < ceil(info))
+     4          6.13     7     6     7  SI (2n-2 < ceil(info))
+     5          7.98     8     8     9  no
+     6          9.85    10    10    11  no
+     7         11.74    12    12    13  no
+     8         13.65    14    14    15  no
+     9         15.57    16    16    17  no
+    10         17.50    18    18    19  no
+    16         29.16    30    30    31  no
+    64        124.17   125   126   127  no
+   256        507.17   508   510   511  no
+  1024       2042.17  2043  2046  2047  no
+  primer n en que ceil(log2 C(2n,n)) <= 2n-2 (la informacion deja de detectarla): n = 5
+
+=== 7. La version correcta: ubicar el ultimo elemento de A por biseccion en lo que queda de B ===
+   n  correcta en todas  peor caso  2n-1
+   1               True          1     1
+   2               True          3     3
+   3               True          5     5
+   4               True          7     7
+   5               True          9     9
+   6               True         11    11
+   7               True         13    13
 ```
+
+</details>
 
 **Casos elegidos.**
 

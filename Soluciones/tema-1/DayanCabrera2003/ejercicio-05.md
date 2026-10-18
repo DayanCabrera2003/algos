@@ -66,9 +66,9 @@ Una *iteración* es una vuelta del `while`. Si no sale antes, hace exactamente t
 
 **Teorema 1**. *`floyd(head)` retorna `True` si y solo si la lista tiene un ciclo.*
 
-*Demostración.* ($`\Leftarrow`$, con ciclo retorna `True`.) Con ciclo nunca hay `null`, así que nunca retorna `False`. Por el lema <a href="#lema:enc" data-reference-type="ref" data-reference="lema:enc">1</a> existe $`s\ge1`$ con $`f(s)=f(2s)`$ (por ejemplo, cualquier múltiplo de $`\lambda`$ que sea $`\ge\mu`$ y $`\ge1`$). Por $`I(s)`$, en la iteración $`s`$ se tiene $`t=h`$ y retorna `True`; el primer tal $`s`$ es $`s^*`$ (sección <a href="#sec:costo" data-reference-type="ref" data-reference="sec:costo">6</a>).
+*Demostración.* ($`\Leftarrow`$, con ciclo retorna `True`.) Con ciclo nunca hay `null`, así que nunca retorna `False`. Por el lema 1 existe $`s\ge1`$ con $`f(s)=f(2s)`$ (por ejemplo, cualquier múltiplo de $`\lambda`$ que sea $`\ge\mu`$ y $`\ge1`$). Por $`I(s)`$, en la iteración $`s`$ se tiene $`t=h`$ y retorna `True`; el primer tal $`s`$ es $`s^*`$ (sección 6).
 
-($`\Rightarrow`$, sin ciclo no retorna `True`.) Sin ciclo los nodos $`v_0,\dots,v_{n-1}`$ son distintos, y por $`I(s)`$ en cada iteración que llega al test, $`t=v_s`$ y $`h=v_{2s}`$ con $`s\ge1`$, luego $`2s>s`$ y $`t\ne h`$. El test $`t`$ is $`h`$ nunca es verdadero. Por la terminación (sección <a href="#sec:term" data-reference-type="ref" data-reference="sec:term">5</a>) el algoritmo retorna `False`. ◻
+($`\Rightarrow`$, sin ciclo no retorna `True`.) Sin ciclo los nodos $`v_0,\dots,v_{n-1}`$ son distintos, y por $`I(s)`$ en cada iteración que llega al test, $`t=v_s`$ y $`h=v_{2s}`$ con $`s\ge1`$, luego $`2s>s`$ y $`t\ne h`$. El test $`t`$ is $`h`$ nunca es verdadero. Por la terminación (sección 5) el algoritmo retorna `False`. ◻
 
 ## Terminación: potenciales
 
@@ -84,13 +84,13 @@ Sea $`s`$ el número de iteraciones completas.
 
 - **Fase 2** ($`s\ge\mu`$, los dos en el ciclo): sea $`d(s)`$ la distancia de $`h`$ a $`t`$ medida hacia adelante por el ciclo. Como $`t`$ está en la posición $`(s-\mu)\bmod\lambda`$ del ciclo y $`h`$ en la $`(2s-\mu)\bmod\lambda`$, $`d(s)=(\mathrm{pos}(t)-\mathrm{pos}(h))\bmod\lambda=(-s)\bmod\lambda`$. En un paso, $`d(s+1)=(-s-1)\bmod\lambda=(d(s)-1)\bmod\lambda`$: $`d`$ baja exactamente $`1`$ mientras $`d>0`$, y $`d=0`$ significa $`t=h`$, es decir, el algoritmo retorna. Para tener un entero que siempre baja definimos $`\Phi_2(s)=\lambda\lceil(s+1)/\lambda\rceil-s\in\{1,\dots,\lambda\}`$, los pasos que faltan hasta el próximo múltiplo de $`\lambda`$. Coincide con $`d`$ salvo que vale $`\lambda`$ cuando $`d=0`$ (solo en $`s=0`$, con $`\mu=0`$, donde la coincidencia no cuenta), y baja exactamente $`1`$ por iteración.
 
-El potencial es el par $`(\max(\Phi_1,0),\Phi_2)`$ con el orden lexicográfico: en la fase 1 baja la primera componente, y cuando llega a $`0`$ baja la segunda. Es un orden bien fundado sobre $`\mathbb N\times\mathbb N`$, y la segunda componente, que mide los pasos hasta el próximo múltiplo de $`\lambda`$, es la que anuncia el retorno. El invariante, la bajada exacta de $`1`$ por iteración y la igualdad con la fórmula $`s^*`$ están vigilados con `assert` en el programa (sección <a href="#sec:exp" data-reference-type="ref" data-reference="sec:exp">10</a>).
+El potencial es el par $`(\max(\Phi_1,0),\Phi_2)`$ con el orden lexicográfico: en la fase 1 baja la primera componente, y cuando llega a $`0`$ baja la segunda. Es un orden bien fundado sobre $`\mathbb N\times\mathbb N`$, y la segunda componente, que mide los pasos hasta el próximo múltiplo de $`\lambda`$, es la que anuncia el retorno. El invariante, la bajada exacta de $`1`$ por iteración y la igualdad con la fórmula $`s^*`$ están vigilados con `assert` en el programa (sección 10).
 
 ## Costo exacto
 
 **Teorema 2**. *Con ciclo, `floyd` retorna `True` en la iteración $`s^*=\lambda\lceil\mu/\lambda\rceil`$ si $`\mu>0`$, y $`s^*=\lambda`$ si $`\mu=0`$. Siempre $`s^*\le\mu+\lambda`$, con igualdad si y solo si $`\mu=0`$. Hace $`3s^*`$ lecturas de puntero y se encuentra en el nodo $`v_{\mu+((-\mu)\bmod\lambda)}`$.*
 
-*Demostración.* Por el lema <a href="#lema:enc" data-reference-type="ref" data-reference="lema:enc">1</a>, el primer encuentro es el menor $`s\ge\max(\mu,1)`$ con $`\lambda\mid s`$, que es $`\lambda\lceil\max(\mu,1)/\lambda\rceil`$ (igual a $`s^*`$ en los dos casos). Como $`s^*<\max(\mu,1)+\lambda`$, resulta $`s^*\le\mu+\lambda-1`$ si $`\mu\ge1`$ y $`s^*=\lambda=\mu+\lambda`$ si $`\mu=0`$. Cada iteración hace tres lecturas. El nodo es $`f(s^*)=\mu+((s^*-\mu)\bmod\lambda)=\mu+((-\mu)\bmod\lambda)`$, porque $`\lambda\mid s^*`$. ◻
+*Demostración.* Por el lema 1, el primer encuentro es el menor $`s\ge\max(\mu,1)`$ con $`\lambda\mid s`$, que es $`\lambda\lceil\max(\mu,1)/\lambda\rceil`$ (igual a $`s^*`$ en los dos casos). Como $`s^*<\max(\mu,1)+\lambda`$, resulta $`s^*\le\mu+\lambda-1`$ si $`\mu\ge1`$ y $`s^*=\lambda=\mu+\lambda`$ si $`\mu=0`$. Cada iteración hace tres lecturas. El nodo es $`f(s^*)=\mu+((s^*-\mu)\bmod\lambda)=\mu+((-\mu)\bmod\lambda)`$, porque $`\lambda\mid s^*`$. ◻
 
 **Sin ciclo.** Con $`n\ge1`$ nodos, `floyd` retorna `False` en la iteración $`\lceil n/2\rceil`$: si $`n=2s`$, $`h`$ llega a `null` en la segunda lectura de $`h`$ de la iteración $`s`$ (tres lecturas); si $`n=2s-1`$, en la primera lectura de $`h`$ (dos lecturas). Las lecturas son $`3n/2`$ si $`n`$ es par y $`(3n+1)/2`$ si $`n`$ es impar; con $`n=0`$ no hay iteraciones. **Memoria:** dos punteros, $`O(1)`$, en todos los casos.
 
@@ -140,7 +140,7 @@ Esto *refuta* la intuición de que con $`k=3`$ “pueden saltarse” porque $`h`
 
 **La variante que parece correcta.**
 
-Una optimización plausible para evitar la comparación inicial es empezar la liebre $`\delta`$ nodos adelantada (con $`\delta=1`$: $`h=`$ `head.next`). Al entrar $`t`$ al ciclo, la distancia de $`h`$ a $`t`$ cumple $`d\equiv-\delta\pmod g`$ con $`g=\gcd(k-1,\lambda)`$, y el lema <a href="#lema:gcd" data-reference-type="ref" data-reference="lema:gcd">2</a> da: **se encuentran si y solo si $`g\mid\delta`$.** Con $`k=2`$, $`g=1`$ y siempre; con $`k\ge3`$ depende de $`\delta`$ y de $`\lambda`$, no solo de la paridad. Ejemplos ejecutados (secciones 8 y 9 de la salida):
+Una optimización plausible para evitar la comparación inicial es empezar la liebre $`\delta`$ nodos adelantada (con $`\delta=1`$: $`h=`$ `head.next`). Al entrar $`t`$ al ciclo, la distancia de $`h`$ a $`t`$ cumple $`d\equiv-\delta\pmod g`$ con $`g=\gcd(k-1,\lambda)`$, y el lema 2 da: **se encuentran si y solo si $`g\mid\delta`$.** Con $`k=2`$, $`g=1`$ y siempre; con $`k\ge3`$ depende de $`\delta`$ y de $`\lambda`$, no solo de la paridad. Ejemplos ejecutados (secciones 8 y 9 de la salida):
 
 - $`k=3`$, $`\mu=0`$, $`\lambda=2`$, $`\delta=1`$ (**contraejemplo mínimo en nodos**: dos nodos que se apuntan entre sí): $`g=2\nmid1`$. Las posiciones $`(t,h)`$ son $`(0,1),(1,0),(0,1),\dots`$, la distancia vale siempre $`1`$ y nunca $`0`$: sin encuentro en $`3000`$ pasos. Con salida común se encuentran en $`1`$ paso.
 
@@ -173,8 +173,103 @@ Como $`\mu`$ y $`\lambda`$ no se conocen de antemano, ninguna $`k>2`$ gana siemp
 
 Código: `ej05_floyd.py`. Cada lectura de `.next` se cuenta con una propiedad de la clase `Nodo`. Verifica con `assert` el invariante $`I(s)`$ (comparando los $`\texttt{id}`$ de $`t`$ y $`h`$ con $`f(s)`$ y $`f(2s)`$), la bajada exacta de $`1`$ de los dos potenciales, y compara los pasos, las lecturas y el nodo del encuentro contra las fórmulas para todo $`0\le\mu\le60`$, $`1\le\lambda\le60`$. Salida real:
 
-``` default
+<details>
+<summary><code>ej05_salida.txt</code></summary>
+
+```text
+=== 1. Casos limite ===
+  lista vacia:                 hay_ciclo=False, pasos=0
+  un nodo sin ciclo (n=1):     hay_ciclo=False, pasos=1
+  un nodo con autolazo (0,1):  hay_ciclo=True, pasos=1, lecturas=3
+  mu=0, lam=2: hay_ciclo=True, pasos=2 (formula 2), encuentro en el nodo 0
+  mu=1, lam=1: hay_ciclo=True, pasos=1 (formula 1), encuentro en el nodo 1
+  mu=3, lam=4: hay_ciclo=True, pasos=4 (formula 4), encuentro en el nodo 4
+  mu=5, lam=3: hay_ciclo=True, pasos=6 (formula 6), encuentro en el nodo 6
+
+=== 2. Con ciclo: pasos exactos, lecturas y nodo de encuentro, mu en 0..60, lam en 1..60 ===
+  3600 listas; casos donde falla alguna comprobacion: 0
+  max(pasos - (mu+lam)) = 0  (cota pasos <= mu+lam; igualdad solo con mu=0)
+  igualdad pasos = mu+lam solo cuando mu = 0: True  (60 casos)
+  invariante t=f(s), h=f(2s) y potenciales (fase1, fase2) vigilados en 21582 pasos, mu,lam <= 30: sin fallos
+
+=== 3. Sin ciclo: pasos y lecturas exactos para n = 0..300 ===
+  n=0..300: fallos = 0  (pasos = ceil(n/2); lecturas = 3n/2 si n par, (3n+1)/2 si impar)
+    n=  0: pasos=  0, lecturas=  0
+    n=  1: pasos=  1, lecturas=  2
+    n=  2: pasos=  1, lecturas=  3
+    n=  3: pasos=  2, lecturas=  5
+    n=  4: pasos=  2, lecturas=  6
+    n=  5: pasos=  3, lecturas=  8
+    n=100: pasos= 50, lecturas=150
+    n=101: pasos= 51, lecturas=152
+
+=== 4. Traza: mu=3, lam=4  (nodos v0 v1 v2 | v3 v4 v5 v6 -> v3) ===
+  paso s   t=f(s)   h=f(2s)   t==h
+       0   v0       v0        True
+       1   v1       v2        False
+       2   v2       v4        False
+       3   v3       v6        False
+       4   v4       v4        True
+  Floyd: hay_ciclo=True, pasos=4, encuentro en v4
+  fase 2: p desde la cabeza, q desde el encuentro, avanzan de a 1
+     j   p    q
+     0  v0  v4
+     1  v1  v5
+     2  v2  v6
+     3  v3  v3
+  se encuentran en v3 tras 3 pasos = mu; luego se recorre el ciclo desde v3
+
+=== 5. Fase 2: mu y lam, mu en 0..60, lam en 1..60 ===
+  3600 listas; fallos al recuperar (mu, lam): 0
+  mu=1000, lam=70: lecturas totales = 5220 (= 3*1050 + 2*1000 + 70 = 5220)
+
+=== 6. Memoria: Floyd (2 punteros) contra conjunto de visitados ===
+  mu=100000, lam=100000 (200000 nodos): Floyd hay_ciclo=True en 100000 pasos, pico de memoria 72 bytes;
+  visitados hay_ciclo=True, 200000 nodos guardados, pico de memoria 17616280 bytes (x244670)
+
+=== 7. Velocidades (1, k): siempre se encuentran, con la misma salida de partida ===
+  k=2: mu,lam <= 40 (1600 listas): se encuentran siempre y pasos = (lam/g)*ceil(max(mu,1)/(lam/g)), g=gcd(k-1,lam): fallos = 0
+  k=3: mu,lam <= 40 (1600 listas): se encuentran siempre y pasos = (lam/g)*ceil(max(mu,1)/(lam/g)), g=gcd(k-1,lam): fallos = 0
+  k=4: mu,lam <= 40 (1600 listas): se encuentran siempre y pasos = (lam/g)*ceil(max(mu,1)/(lam/g)), g=gcd(k-1,lam): fallos = 0
+  k=5: mu,lam <= 40 (1600 listas): se encuentran siempre y pasos = (lam/g)*ceil(max(mu,1)/(lam/g)), g=gcd(k-1,lam): fallos = 0
+  k=6: mu,lam <= 40 (1600 listas): se encuentran siempre y pasos = (lam/g)*ceil(max(mu,1)/(lam/g)), g=gcd(k-1,lam): fallos = 0
+  k=7: mu,lam <= 40 (1600 listas): se encuentran siempre y pasos = (lam/g)*ceil(max(mu,1)/(lam/g)), g=gcd(k-1,lam): fallos = 0
+  Lecturas de puntero hasta el encuentro, (k+1) * pasos:
+    mu  lam |       k=2       k=3       k=4       k=5
+     0   12 |        36        24        20        18
+     0    7 |        21        28        35        42
+     5   12 |        36        24        40        36
+   100   30 |       360       420       500       630
+   100   31 |       372       496       620       744
+     0 1000 |      3000      2000      5000      1500
+  1000 1000 |      3000      4000      5000      6000
+  Quien gana en lecturas (assert en mu,lam <= 60):
+    mu = 0: k=3 gana a k=2 si y solo si lam es par (4*lam/g < 3*lam  <=>  g = gcd(2,lam) = 2)
+    mu >= 3*lam - 2: k=2 gana estrictamente a todo k=3..7 (630 pares): 3(mu+lam-1) < 4mu <= (k+1)*s_k
+    mu=100, lam=30: k=2: s=120, lecturas 360;  k=3: g=2, s=105, lecturas 420  (mu >= 88)
+    mu=100, lam=31: k=2: s=124, lecturas 372;  k=3: g=1, s=124, lecturas 496
+
+=== 8. La variante que parece correcta: la liebre sale delta nodos adelantada ===
+  (al entrar al ciclo, la distancia d de h a t cumple d = -delta (mod g), g = gcd(k-1, lam);
+   se encuentran  sii  g divide a delta)
+  k=2: listas (de 156) donde NO se encuentran:  delta=0: 0,  delta=1: 0,  delta=2: 0,  delta=3: 0,  delta=4: 0
+  k=3: listas (de 156) donde NO se encuentran:  delta=0: 0,  delta=1: 78,  delta=2: 0,  delta=3: 78,  delta=4: 0
+  k=4: listas (de 156) donde NO se encuentran:  delta=0: 0,  delta=1: 52,  delta=2: 52,  delta=3: 0,  delta=4: 52
+  k=5: listas (de 156) donde NO se encuentran:  delta=0: 0,  delta=1: 78,  delta=2: 39,  delta=3: 78,  delta=4: 0
+  (assert: en cada una de las 4*5*156 pruebas, se encuentran  <=>  gcd(k-1, lam) | delta)
+  Ejemplos ejecutados:
+    k=3, mu=0, lam=2, delta=1: gcd(k-1,lam)=2, encuentro=None (sin encuentro en 3000 pasos)
+    k=4, mu=0, lam=3, delta=2: gcd(k-1,lam)=3, encuentro=None (sin encuentro en 3000 pasos)
+    k=4, mu=0, lam=3, delta=3: gcd(k-1,lam)=3, encuentro=True en 1 pasos
+    k=5, mu=0, lam=4, delta=2: gcd(k-1,lam)=4, encuentro=None (sin encuentro en 3000 pasos)
+
+=== 9. Contraejemplo minimo real (ciclo de largo 2, k=3, liebre adelantada 1 nodo) ===
+  la lista mas pequena (menos nodos) que rompe (1,3) con desfase 1: mu=0, lam=2 (2 nodos)
+  posiciones (t, h) en el ciclo de 2 nodos, k=3: [(0, 1), (1, 0), (0, 1), (1, 0), (0, 1), (1, 0)]  -> la distancia h-t vale siempre 1 (impar), nunca 0
+  con salida comun (desfase 0): encuentro en 1 paso;  (1,2) con desfase 1: (True, 1)
 ```
+
+</details>
 
 **Casos elegidos.**
 

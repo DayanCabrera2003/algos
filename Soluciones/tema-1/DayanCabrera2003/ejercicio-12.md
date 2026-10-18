@@ -154,7 +154,7 @@ Tres invariantes, que se demuestran leyendo el código:
 
 Entonces $`(a',b)`$, mutuamente aceptable, es una pareja bloqueante de $`\mathcal M'`$, que era estable. Contradicción.
 
-Con eso: $`a`$ propone en orden decreciente y nunca es rechazado por una pareja válida, de modo que llega a $`b^*(a)`$ (los anteriores no son válidos) y $`b^*(a)`$ no lo rechaza ni lo desplaza (sería un rechazo por pareja válida): queda con $`b^*(a)`$. Si $`a`$ no tiene parejas válidas, no puede quedar emparejado: el resultado es estable (teorema <a href="#teo:estable" data-reference-type="ref" data-reference="teo:estable">1</a>) y su pareja sería válida. ◻
+Con eso: $`a`$ propone en orden decreciente y nunca es rechazado por una pareja válida, de modo que llega a $`b^*(a)`$ (los anteriores no son válidos) y $`b^*(a)`$ no lo rechaza ni lo desplaza (sería un rechazo por pareja válida): queda con $`b^*(a)`$. Si $`a`$ no tiene parejas válidas, no puede quedar emparejado: el resultado es estable (teorema 1) y su pareja sería válida. ◻
 
 Consecuencias: el resultado *no depende del orden de ejecución* (porque $`b^*(a)`$ no depende de él), y los $`b^*(a)`$ forman un emparejamiento estable.
 
@@ -164,28 +164,95 @@ Sea $`\mathcal M_0`$ el resultado del algoritmo. El *teorema de los hospitales r
 
 **Lema 1** (pesimalidad para los receptores). *Sea $`\mathcal M`$ un emparejamiento estable cualquiera y $`b`$ un receptor emparejado en $`\mathcal M_0`$, con $`a=\mathcal M_0(b)`$. Entonces $`b`$ está emparejado en $`\mathcal M`$ y prefiere $`\mathcal M(b)`$ a $`a`$, o lo iguala. Es decir, en $`\mathcal M_0`$ cada receptor emparejado queda con su *peor* pareja válida.*
 
-*Demostración.* Supongamos que no: $`b`$ prefiere $`a=\mathcal M_0(b)`$ a $`\mathcal M(b)`$, o $`b`$ está solo en $`\mathcal M`$. Como $`\mathcal M_0(a)=b`$ y $`a`$ tiene una pareja válida, el teorema <a href="#teo:opt" data-reference-type="ref" data-reference="teo:opt">2</a> da $`b=b^*(a)`$, la mejor pareja válida de $`a`$. En $`\mathcal M`$, $`a`$ está solo, o está con $`\mathcal M(a)`$, que es pareja válida de $`a`$ (porque $`\mathcal M`$ es estable) y distinta de $`b`$ (si $`\mathcal M(a)=b`$ sería $`\mathcal M(b)=a`$, y $`b`$ no preferiría $`a`$ a $`\mathcal M(b)`$). En los dos casos $`a`$ prefiere $`b=b^*(a)`$ a lo que tiene en $`\mathcal M`$. Y $`b`$ prefiere $`a`$ a $`\mathcal M(b)`$, o está solo. El par $`(a,b)`$ es mutuamente aceptable ($`\mathcal M_0`$ es IR, teorema <a href="#teo:estable" data-reference-type="ref" data-reference="teo:estable">1</a>). Entonces $`(a,b)`$ es una pareja bloqueante de $`\mathcal M`$, que era estable. Contradicción. ◻
+*Demostración.* Supongamos que no: $`b`$ prefiere $`a=\mathcal M_0(b)`$ a $`\mathcal M(b)`$, o $`b`$ está solo en $`\mathcal M`$. Como $`\mathcal M_0(a)=b`$ y $`a`$ tiene una pareja válida, el teorema 2 da $`b=b^*(a)`$, la mejor pareja válida de $`a`$. En $`\mathcal M`$, $`a`$ está solo, o está con $`\mathcal M(a)`$, que es pareja válida de $`a`$ (porque $`\mathcal M`$ es estable) y distinta de $`b`$ (si $`\mathcal M(a)=b`$ sería $`\mathcal M(b)=a`$, y $`b`$ no preferiría $`a`$ a $`\mathcal M(b)`$). En los dos casos $`a`$ prefiere $`b=b^*(a)`$ a lo que tiene en $`\mathcal M`$. Y $`b`$ prefiere $`a`$ a $`\mathcal M(b)`$, o está solo. El par $`(a,b)`$ es mutuamente aceptable ($`\mathcal M_0`$ es IR, teorema 1). Entonces $`(a,b)`$ es una pareja bloqueante de $`\mathcal M`$, que era estable. Contradicción. ◻
 
 **Teorema 3** (hospitales rurales). *Para todo emparejamiento estable $`\mathcal M`$, los mismos proponentes y los mismos receptores están emparejados en $`\mathcal M`$ y en $`\mathcal M_0`$.*
 
 *Demostración.* Sean $`P(\mathcal M)`$ y $`R(\mathcal M)`$ los proponentes y receptores emparejados en $`\mathcal M`$, con $`|P(\mathcal M)|=|R(\mathcal M)|=|\mathcal M|`$.
 
-1.  *Proponentes.* Si $`a\in P(\mathcal M)`$, $`\mathcal M(a)`$ es pareja válida de $`a`$; por la optimalidad (teorema <a href="#teo:opt" data-reference-type="ref" data-reference="teo:opt">2</a>) $`a`$ queda emparejado en $`\mathcal M_0`$. Entonces $`P(\mathcal M)\subseteq P(\mathcal M_0)`$ y $`|\mathcal M|\le|\mathcal M_0|`$.
+1.  *Proponentes.* Si $`a\in P(\mathcal M)`$, $`\mathcal M(a)`$ es pareja válida de $`a`$; por la optimalidad (teorema 2) $`a`$ queda emparejado en $`\mathcal M_0`$. Entonces $`P(\mathcal M)\subseteq P(\mathcal M_0)`$ y $`|\mathcal M|\le|\mathcal M_0|`$.
 
-2.  *Receptores.* Si $`b\in R(\mathcal M_0)`$, por el lema <a href="#lema:pes" data-reference-type="ref" data-reference="lema:pes">1</a> $`b`$ está emparejado en $`\mathcal M`$. Entonces $`R(\mathcal M_0)\subseteq R(\mathcal M)`$ y $`|\mathcal M_0|\le|\mathcal M|`$.
+2.  *Receptores.* Si $`b\in R(\mathcal M_0)`$, por el lema 1 $`b`$ está emparejado en $`\mathcal M`$. Entonces $`R(\mathcal M_0)\subseteq R(\mathcal M)`$ y $`|\mathcal M_0|\le|\mathcal M|`$.
 
 3.  *Conteo.* De (i) y (ii), $`|\mathcal M|=|\mathcal M_0|`$. Como $`P(\mathcal M)\subseteq P(\mathcal M_0)`$ y tienen el mismo número de elementos, $`P(\mathcal M)=P(\mathcal M_0)`$; igual $`R(\mathcal M)=R(\mathcal M_0)`$.
 
  ◻
 
-La verificación exhaustiva (sección <a href="#sec:exp" data-reference-type="ref" data-reference="sec:exp">7</a>) es la comprobación: en las $`4000`$ instancias, el conjunto de emparejados es el mismo en todos los estables, y la pesimalidad del lema <a href="#lema:pes" data-reference-type="ref" data-reference="lema:pes">1</a> se cumple en todos.
+La verificación exhaustiva (sección 7) es la comprobación: en las $`4000`$ instancias, el conjunto de emparejados es el mismo en todos los estables, y la pesimalidad del lema 1 se cumple en todos.
 
 ## Comprobación experimental
 
 Código: `ej12_gale_shapley.py`. El verificador de estabilidad es independiente del algoritmo (construye sus propios rangos y mira los $`n\cdot m`$ pares). La fuerza bruta enumera *todos* los emparejamientos parciales (hasta $`1546`$ para $`n=m=5`$) y se queda con los estables. Salida real:
 
-``` default
+<details>
+<summary><code>ej12_salida.txt</code></summary>
+
+```text
+=== 1. Una instancia con n != m, listas incompletas, y su traza ===
+  a1 lista: b1 > b2 > b3
+  a2 lista: b1 > b3
+  a3 lista: b1 > b2
+  a4 lista: b2
+  b1 lista: a2 > a3 > a1
+  b2 lista: a1 > a4
+  b3 lista: a1
+  paso  a  propone a  tenia   se queda con  que pasa
+     1  a1         b1      -           a1  acepta
+     2  a2         b1     a1           a2  acepta
+     3  a3         b1     a2           a2  rechaza
+     4  a4         b2      -           a4  acepta
+     5  a1         b2     a4           a1  acepta
+     6  a3         b2     a1           a1  rechaza
+  resultado: a1-b2, a2-b1, a3 solo, a4 solo (6 propuestas; suma |L_a| = 8)
+  verificador independiente: individualmente racional = True, pares bloqueantes = []
+  emparejamientos estables (fuerza bruta, 73 emparejamientos posibles): [['a1-b2', 'a2-b1', 'a3 solo', 'a4 solo']]
+
+=== 2. Por que hace falta la racionalidad individual (a) ===
+  a lista: (nadie); b lista: a1. Emparejamiento {a1-b1}: racional = False, pares bloqueantes en el sentido ingenuo = []
+  Sin pares bloqueantes, pero a1 queda con alguien que no lista: no es estable. El vacio {a1 solo, b1 solo} si lo es: (True, [])
+  Algoritmo sobre esa instancia: ([None], 0)
+
+=== 3. Experimento principal: instancias aleatorias pequenas (n, m <= 5), TODOS los emparejamientos enumerados ===
+  4000 instancias (3253 con n != m, 1000 con receptores de lista completa, 333 con emparejamiento vacio)
+  (i)   el resultado de Gale-Shapley es estable (verificador independiente):                4000 de 4000
+  (ii)  el resultado no depende del orden (cola, pila, dos azares; mismo M y mismas propuestas): 4000 de 4000
+  (iii) optimo para quien propone (mejor pareja estable, o solo si no tiene ninguna):          4000 de 4000
+  (iv)  hospitales rurales: mismo conjunto de emparejados en TODO emparejamiento estable:       4000 de 4000
+  (iv') pesimalidad: en M0 cada receptor emparejado queda con su PEOR pareja valida (en todo estable lo iguala o mejora): 4000 de 4000
+  (v)   propuestas = sum_{a solo} |L_a| + sum_{a emparejado} lugar de su pareja:                4000 de 4000
+  (vi)  propuestas <= sum |L_a|:                                                               4000 de 4000
+
+=== 4. Propuestas contra sum |L_a|: instancias grandes y la igualdad ===
+      n     m  sum |L_a|  propuestas  cociente  proponentes solos
+     50    50       2500         169     0.068                  0
+     50    50        755         338     0.448                  7
+    200   100       9879        7337     0.743                100
+    100   200      10059         304     0.030                  0
+    400   400      16010        2164     0.135                  0
+    400   400      16088        7297     0.454                 67
+  Igualdad propuestas = sum |L_a|: sucede exactamente cuando todo proponente queda solo o con el ULTIMO de su lista.
+  (a) receptores con listas vacias: nadie acepta; propuestas 7 = sum |L_a| = 7
+  (b) con emparejamientos: a1:[b1,b2], a2:[b1]; b1: a2>a1; b2: a1 -> M = [1, 0], propuestas 3 = sum |L_a| = 3 (a1 con el ultimo de su lista, a2 con el unico)
+  Complejidad con listas completas (n x n), peor caso sobre TODAS las instancias de n = 2, 3:
+    n=2: maximo de propuestas = 3  (n^2 - n + 1 = 3; la cota del potencial es n^2 = 4)
+    n=3: maximo de propuestas = 7  (n^2 - n + 1 = 7; la cota del potencial es n^2 = 9)
+
+=== 5. Verificar el teorema de los hospitales rurales a mano: un ejemplo con varios estables ===
+  instancia 2x2 con dos estables: [['a1-b1', 'a2-b2'], ['a1-b2', 'a2-b1']]; Gale-Shapley: [0, 1]
+
+=== 6. Variantes con error que parecen correctas ===
+  V1 (el receptor acepta a quien no lista 'porque es mejor que estar solo'): instancia mas chica hallada: n=1, m=1
+     listas a: [[0]], listas b: [[]]; resultado [0]: individualmente racional = False, bloqueantes = []
+     instancia minima: a lista [b], b no lista a nadie: resultado [0] -> racional = False (b queda con un no listado)
+     en 3000 instancias aleatorias, la variante no es estable en 1624 (54.1 %)
+  V2 (el proponente que agoto su lista la reinicia): a lista [b], b no lista a nadie -> NO TERMINA (propuestas hechas: 5000, tope de pasos 5000)
+     con una instancia donde el original termina (M = [1, 0]), la variante: [1, 0] (3 propuestas)
+     en 500 instancias aleatorias pequenas, la variante no termina en 304 (60.8 %): el potencial ya no baja
+     con listas COMPLETAS (el caso de la conferencia) ningun proponente agota su lista y la variante nunca se activa:
+     500 de 500 instancias completas: la variante coincide con el original
 ```
+
+</details>
 
 **Casos elegidos.**
 

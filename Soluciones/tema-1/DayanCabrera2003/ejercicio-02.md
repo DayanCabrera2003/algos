@@ -71,7 +71,7 @@ Sea $`\Phi_k`$ el potencial tras $`k`$ vueltas. Por inducción, $`\Phi_k\le\lflo
 
 ## Costo
 
-Cada vuelta hace exactamente una comparación (de tres vías) y un número constante de operaciones del word RAM. Entonces el peor caso son $`\lceil\log_2(n+1)\rceil`$ comparaciones, el tiempo es $`O(\log n)`$ y la memoria extra es $`O(1)`$ (tres variables). El peor caso se alcanza (sección <a href="#sec:cota" data-reference-type="ref" data-reference="sec:cota">6</a>); el mejor caso es una comparación, cuando $`x=A[\lfloor n/2\rfloor]`$.
+Cada vuelta hace exactamente una comparación (de tres vías) y un número constante de operaciones del word RAM. Entonces el peor caso son $`\lceil\log_2(n+1)\rceil`$ comparaciones, el tiempo es $`O(\log n)`$ y la memoria extra es $`O(1)`$ (tres variables). El peor caso se alcanza (sección 6); el mejor caso es una comparación, cuando $`x=A[\lfloor n/2\rfloor]`$.
 
 ## La cota de información
 
@@ -97,7 +97,7 @@ Luego *ningún $`A[i]`$ comparado en ese camino está entre $`x_1`$ y $`x_2`$*. 
 
 **Lema 2**. *Todo algoritmo correcto de decisión (y por lo tanto de búsqueda) en el modelo de tres respuestas necesita $`\lceil\log_2(n+1)\rceil`$ comparaciones en el peor caso.*
 
-*Demostración.* Por el lema <a href="#lema:huecos" data-reference-type="ref" data-reference="lema:huecos">1</a>, los $`n+1`$ huecos llegan a $`n+1`$ hojas distintas. Sus trayectorias solo usan las ramas $`<`$ y $`>`$ (la respuesta $`=`$ significaría $`x\in A`$). Esos nodos forman un árbol binario con al menos $`n+1`$ hojas, y uno de altura $`h`$ tiene a lo sumo $`2^h`$, luego $`2^h\ge n+1`$ y $`h\ge\lceil\log_2(n+1)\rceil`$. La altura del árbol completo es al menos $`h`$. ◻
+*Demostración.* Por el lema 1, los $`n+1`$ huecos llegan a $`n+1`$ hojas distintas. Sus trayectorias solo usan las ramas $`<`$ y $`>`$ (la respuesta $`=`$ significaría $`x\in A`$). Esos nodos forman un árbol binario con al menos $`n+1`$ hojas, y uno de altura $`h`$ tiene a lo sumo $`2^h`$, luego $`2^h\ge n+1`$ y $`h\ge\lceil\log_2(n+1)\rceil`$. La altura del árbol completo es al menos $`h`$. ◻
 
 **Optimalidad con tres respuestas.** La búsqueda binaria hace a lo sumo $`\lceil\log_2(n+1)\rceil`$ comparaciones (sección 4) y resuelve la búsqueda completa, así que la cota es exacta, y no se puede mejorar ni siquiera para el problema más débil de decisión.
 
@@ -111,7 +111,7 @@ El algoritmo que lo alcanza es `lower_bound` más una comparación de igualdad. 
 
 ![Figura](figuras/ej02_fig1.png)
 
-La figura es el árbol de la búsqueda binaria con $`n=7`$ (en C5, figura 7, $`a_i=A[i-1]`$; aquí usamos $`A[0..n-1]`$ en todo el documento). El programa de la sección <a href="#sec:exp" data-reference-type="ref" data-reference="sec:exp">8</a> lo reconstruye ejecutando el algoritmo y encuentra $`8`$ caminos distintos para los $`8`$ huecos.
+La figura es el árbol de la búsqueda binaria con $`n=7`$ (en C5, figura 7, $`a_i=A[i-1]`$; aquí usamos $`A[0..n-1]`$ en todo el documento). El programa de la sección 8 lo reconstruye ejecutando el algoritmo y encuentra $`8`$ caminos distintos para los $`8`$ huecos.
 
 ## Una traza del potencial
 
@@ -125,12 +125,86 @@ Azul: el intervalo $`[lo,hi)`$. Rojo: la posición $`m`$ examinada. El potencial
 
 Código: `ej02_busqueda.py`. Vigila el invariante $`I`$ y la desigualdad $`\Phi'\le\lfloor\Phi/2\rfloor`$ con `assert` en cada vuelta, y mide el peor caso sobre las $`2n+1`$ clases de entrada ($`n`$ aciertos y $`n+1`$ huecos), tanto con tres respuestas (sección 2) como con dos (sección 6b: peor caso $`\lceil\log_2(n+1)\rceil+1=\lceil\log_2(2n+1)\rceil`$ para $`n=1..3000`$). Salida real completa:
 
-``` default
+<details>
+<summary><code>ej02_salida.txt</code></summary>
+
+```text
+=== 1. Correctitud con invariante y potencial vigilados (aleatorio) ===
+  20000 casos (arreglos con duplicados, x dentro y fuera): sin fallos de aserto
+
+=== 2. Peor caso exacto sobre TODAS las entradas (2n+1 clases) = ceil(log2(n+1)) ===
+  n = 0..3000: peor caso == ceil(log2(n+1)) en todos salvo 0: []
+  borde y tipicos:  n  peor  cota
+               0    0    0
+               1    1    1
+               2    2    2
+               3    2    2
+               7    3    3
+               8    4    4
+              15    4    4
+              16    5    5
+            1000   10   10
+            1023   10   10
+            1024   11   11
+
+=== 3. Hojas: los n+1 huecos terminan en hojas distintas (lema 4 de C5) ===
+  n=    7: 8 caminos distintos para 8 huecos
+  n=    8: 9 caminos distintos para 9 huecos
+  n=  100: 101 caminos distintos para 101 huecos
+  n= 1000: 1001 caminos distintos para 1001 huecos
+
+=== 4. Comparaciones por entrada, n = 7 (arbol de la figura 7 de C5) ===
+  x en A  : [(1, 3), (2, 2), (3, 3), (4, 1), (5, 3), (6, 2), (7, 3)]
+  huecos  : [('h0', 3), ('h1', 3), ('h2', 3), ('h3', 3), ('h4', 3), ('h5', 3), ('h6', 3), ('h7', 3)]
+  histograma (comps -> entradas, 2n+1=15 entradas): {1: 1, 2: 2, 3: 12}
+
+=== 5. Huecos vecinos: los caminos se separan exactamente en A[g] ===
+  n = 0..200, 20100 pares de huecos vecinos (g, g+1): el primer desacuerdo es la comparacion con A[g]
+  Algoritmo que de verdad se salta el indice j (decision: esta x?):
+    n= 7: falla solo en x = A[j] para cada j  (7 fallos en 105 pruebas)
+    n= 8: falla solo en x = A[j] para cada j  (8 fallos en 136 pruebas)
+    n=15: falla solo en x = A[j] para cada j  (15 fallos en 465 pruebas)
+    n=50: falla solo en x = A[j] para cada j  (50 fallos en 5050 pruebas)
+
+=== 6. Variantes con un error de una unidad: el potencial las atrapa ===
+  [lo,hi) con lo = m: cuelga en 21 de 49 entradas (n <= 6); la primera: A=[1], x=2
+    traza (lo, hi, Phi): [(0, 1, 1), (0, 1, 1), (0, 1, 1), (0, 1, 1)] ... el potencial se queda en 1
+  [lo,hi] con hi = m: cuelga en 21 de 49 entradas (n <= 6); la primera: A=[1], x=0
+    traza (lo, hi, Phi): [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] ... el potencial se queda en 1
+  la version correcta termina en <= ceil(log2(n+1)) pasos en las mismas entradas: True
+  Caracterizacion (assert para n = 0..12, A distintos, x en 0..2n):
+    semi: cuelga <=> n>=1, x no esta y x > A[0];  cerr: cuelga <=> n>=1, x no esta y x < A[n-1]
+    con x presente nunca cuelga
+    verificado en 169 entradas; cuelgan 78 (semi) y 78 (cerr); por formula: sum_(n=1..12) n = 78
+    n <= 6: entradas = 49, x ausente = 28, de ellas en el hueco 0 (o n-1) = 7, cuelgan 28 - 7 = 21
+
+=== 6b. Modelo de 2 vias: lower_bound + comparacion de igualdad ===
+  n = 1..3000: peor caso == ceil(log2(n+1)) + 1 == ceil(log2(2n+1)) salvo 0: []
+    n=    1  peor=  2  ceil(log2(2n+1))=  2
+    n=    2  peor=  3  ceil(log2(2n+1))=  3
+    n=    3  peor=  3  ceil(log2(2n+1))=  3
+    n=    7  peor=  4  ceil(log2(2n+1))=  4
+    n=    8  peor=  5  ceil(log2(2n+1))=  5
+    n= 1000  peor= 11  ceil(log2(2n+1))= 11
+    n= 1023  peor= 11  ceil(log2(2n+1))= 11
+    n= 1024  peor= 12  ceil(log2(2n+1))= 12
+  5000 pruebas aleatorias: mismo veredicto que la binaria de 3 vias
+
+=== 7. Traza con el potencial, n = 20, x = 13 (hueco entre 12 y 14) ===
+  paso   lo   hi  Phi=hi-lo   m  A[m] x?
+     1    0   20         20  10    20  x<A[m]
+     2    0   10         10   5    10  x>A[m]
+     3    6   10          4   8    16  x<A[m]
+     4    6    8          2   7    14  x<A[m]
+     5    6    7          1   6    12  x>A[m]
+  resultado ('hueco', 7), comparaciones 5, cota ceil(log2 21) = 5
 ```
+
+</details>
 
 **Casos elegidos.**
 
-*Típicos:* $`20000`$ arreglos aleatorios con duplicados y $`x`$ dentro y fuera (sección 1 de la salida) y $`n=1000`$ (peor caso $`10=\lceil\log_2 1001\rceil`$). *Bordes:* $`n=0`$ (no entra al ciclo, $`0`$ comparaciones, devuelve el hueco $`0`$), $`n=1`$, $`x`$ menor que todos o mayor que todos (huecos $`0`$ y $`n`$), duplicados (el invariante no usa que sean distintos). *Adversariales para la demostración:* (i) $`n=2^k-1`$ y $`n=2^k`$: justo donde $`\lceil\log_2(n+1)\rceil`$ salta, y el programa da $`n=1023\mapsto10`$ y $`n=1024\mapsto11`$; (ii) la sección 5 de la salida verifica, para los $`20100`$ pares de huecos vecinos con $`n\le200`$, que los caminos de la búsqueda binaria se separan *exactamente* en la comparación con $`A[g]`$, como pide la demostración del lema <a href="#lema:huecos" data-reference-type="ref" data-reference="lema:huecos">1</a>; además implementa un algoritmo que de verdad nunca compara con $`A[j]`$ (si cae en $`m=j`$ usa $`m\pm1`$) y falla solo con $`x=A[j]`$, en la versión de decisión; (iii) las variantes con error de una unidad (sección anterior).
+*Típicos:* $`20000`$ arreglos aleatorios con duplicados y $`x`$ dentro y fuera (sección 1 de la salida) y $`n=1000`$ (peor caso $`10=\lceil\log_2 1001\rceil`$). *Bordes:* $`n=0`$ (no entra al ciclo, $`0`$ comparaciones, devuelve el hueco $`0`$), $`n=1`$, $`x`$ menor que todos o mayor que todos (huecos $`0`$ y $`n`$), duplicados (el invariante no usa que sean distintos). *Adversariales para la demostración:* (i) $`n=2^k-1`$ y $`n=2^k`$: justo donde $`\lceil\log_2(n+1)\rceil`$ salta, y el programa da $`n=1023\mapsto10`$ y $`n=1024\mapsto11`$; (ii) la sección 5 de la salida verifica, para los $`20100`$ pares de huecos vecinos con $`n\le200`$, que los caminos de la búsqueda binaria se separan *exactamente* en la comparación con $`A[g]`$, como pide la demostración del lema 1; además implementa un algoritmo que de verdad nunca compara con $`A[j]`$ (si cae en $`m=j`$ usa $`m\pm1`$) y falla solo con $`x=A[j]`$, en la versión de decisión; (iii) las variantes con error de una unidad (sección anterior).
 
 ## Variantes con un error de una unidad: lo atrapa el potencial
 
@@ -162,7 +236,7 @@ Es lo que dice el resumen del tema (§3): la demostración nombra la estructura 
 
 **Ejecución real (sección 6 de la salida).**
 
-Cada variante cuelga en $`21`$ de las $`49`$ entradas con $`n\le6`$, y la caracterización del lema <a href="#lema:buggy" data-reference-type="ref" data-reference="lema:buggy">3</a> se verifica con `assert` para $`n\le12`$ y todo $`x`$ (169 entradas, $`78`$ cuelgues por variante, que es $`\sum_{n=1}^{12}n`$). El $`21`$ tiene explicación exacta: hay $`28`$ entradas con $`x`$ ausente, $`7`$ de ellas con $`x`$ en el hueco extremo que no cuelga, y $`28-7=21`$. La traza de $`A=[1]`$ muestra $`(lo,hi,\Phi)=(0,1,1)`$ repetido; la versión correcta termina en todas estas entradas dentro de la cota.
+Cada variante cuelga en $`21`$ de las $`49`$ entradas con $`n\le6`$, y la caracterización del lema 3 se verifica con `assert` para $`n\le12`$ y todo $`x`$ (169 entradas, $`78`$ cuelgues por variante, que es $`\sum_{n=1}^{12}n`$). El $`21`$ tiene explicación exacta: hay $`28`$ entradas con $`x`$ ausente, $`7`$ de ellas con $`x`$ en el hueco extremo que no cuelga, y $`28-7=21`$. La traza de $`A=[1]`$ muestra $`(lo,hi,\Phi)=(0,1,1)`$ repetido; la versión correcta termina en todas estas entradas dentro de la cota.
 
 ## Por qué este enfoque
 
@@ -184,6 +258,6 @@ La alternativa “si $`x`$ está, está en $`A[lo..hi-1]`$” basta para la part
 
 - **Potencial:** $`\Phi=hi-lo`$, con $`\Phi'\le\lfloor\Phi/2\rfloor`$; a lo sumo $`\lceil\log_2(n+1)\rceil`$ vueltas, una comparación cada una (secciones 4–5).
 
-- **Cota mínima:** en el modelo de comparaciones con elementos distintos, $`\lceil\log_2(n+1)\rceil`$ para la decisión y la búsqueda con tres respuestas, y $`\lceil\log_2(n+1)\rceil+1`$ para la búsqueda con dos (sección <a href="#sec:cota" data-reference-type="ref" data-reference="sec:cota">6</a>). La búsqueda binaria y `lower_bound` son óptimas en sus modelos.
+- **Cota mínima:** en el modelo de comparaciones con elementos distintos, $`\lceil\log_2(n+1)\rceil`$ para la decisión y la búsqueda con tres respuestas, y $`\lceil\log_2(n+1)\rceil+1`$ para la búsqueda con dos (sección 6). La búsqueda binaria y `lower_bound` son óptimas en sus modelos.
 
 - **Fuera del modelo la cota no aplica:** la búsqueda por interpolación usa aritmética sobre los valores y hace $`O(\log\log n)`$ comparaciones esperadas con datos uniformes; una tabla hash busca en tiempo esperado constante. Son otras instancias de que toda cota viene con un modelo.

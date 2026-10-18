@@ -10,7 +10,7 @@
 
 - $`\Theta(n\log n)`$: crece **entre $`\approx525`$ ($`n=10^3`$) y $`\approx840`$ ($`n=10^{15}`$) veces**, y $`\approx\mathbf{790}`$–$`\mathbf{800}`$ para los tamaños de una hora de cómputo actual ($`n\approx10^{11}`$; el caso de C1 §7 da $`791`$). El factor depende de $`n`$ y tiende a $`1000`$ muy despacio.
 
-Ambas cifras suponen que el costo es *asintóticamente* $`a\,n^2`$ o $`a\,n\log n`$ (hipótesis (H) de la sección <a href="#sec:hip" data-reference-type="ref" data-reference="sec:hip">2</a>); con $`\Theta`$ a secas el factor no queda determinado. Modelo: word RAM, máquina nueva $`1000`$ veces más rápida en todas las operaciones.
+Ambas cifras suponen que el costo es *asintóticamente* $`a\,n^2`$ o $`a\,n\log n`$ (hipótesis (H) de la sección 2); con $`\Theta`$ a secas el factor no queda determinado. Modelo: word RAM, máquina nueva $`1000`$ veces más rápida en todas las operaciones.
 
 ## Modelo y planteamiento
 
@@ -25,7 +25,7 @@ De $`c(n)\le T<c(n+1)`$ se sigue $`c(n)/T\in\bigl(\,c(n)/c(n+1),\,1\bigr]`$ (abi
 ``` math
 c(fn)=K\,c(n),\qquad f=n'/n \tag{$\ast$}
 ```
-tiende a $`0`$ con $`n`$. Para $`n`$ pequeño la aproximación es mala: $`c(3)/c(2)=2{,}38`$ en $`n\log_2 n`$ (salida F del código). Por eso los bordes $`n=2,3`$ se tratan aparte en la sección <a href="#sec:exp" data-reference-type="ref" data-reference="sec:exp">7</a>.
+tiende a $`0`$ con $`n`$. Para $`n`$ pequeño la aproximación es mala: $`c(3)/c(2)=2{,}38`$ en $`n\log_2 n`$ (salida F del código). Por eso los bordes $`n=2,3`$ se tratan aparte en la sección 7.
 
 En este ejercicio no hay un algoritmo que demostrar, así que no hay invariante ni cota mínima. La monotonía de $`c`$ cumple el papel del invariante, y lo que se demuestra son cotas rigurosas para $`f`$.
 
@@ -43,11 +43,11 @@ El rango es amplio, y se alcanza. Sea $`c_1=1`$, $`c_2=4`$ ($`K=1000`$, el rango
 
 - $`c(n)=4n^2`$ para $`n\le10^6`$, meseta $`4\cdot10^{12}`$ hasta $`2\cdot10^6`$ y $`n^2`$ después. Con $`n=5\cdot10^5`$ da $`f=63{,}25`$, el doble.
 
-(Motivación, *fuera* del modelo word RAM, que no tiene caché: es lo que pasaría en una máquina real si, al crecer la entrada, se saliera de la caché y la constante cambiara de $`c`$ a $`4c`$. Aquí solo sirve para que el contraejemplo sea creíble.) Para $`n\log n`$ el análogo es $`f_{Kc_1/c_2}(n)\lesssim f\lesssim f_{Kc_2/c_1}(n)`$, donde $`f_{k}(n)`$ es la solución de $`fn\ln(fn)=k\,n\ln n`$. La demostración es la del Lema <a href="#lema:theta" data-reference-type="ref" data-reference="lema:theta">1</a>, con $`g(m)=m\ln m`$, creciente, en lugar de $`m^2`$. Con $`c_2/c_1=4`$ y $`n=10^{11}`$ el rango es $`[206{,}5;\,3038]`$, y el límite superior pasa de $`1000`$ porque la constante puede *mejorar* al crecer la entrada ($`c_2`$ en $`n`$ y $`c_1`$ en $`n'`$).
+(Motivación, *fuera* del modelo word RAM, que no tiene caché: es lo que pasaría en una máquina real si, al crecer la entrada, se saliera de la caché y la constante cambiara de $`c`$ a $`4c`$. Aquí solo sirve para que el contraejemplo sea creíble.) Para $`n\log n`$ el análogo es $`f_{Kc_1/c_2}(n)\lesssim f\lesssim f_{Kc_2/c_1}(n)`$, donde $`f_{k}(n)`$ es la solución de $`fn\ln(fn)=k\,n\ln n`$. La demostración es la del Lema 1, con $`g(m)=m\ln m`$, creciente, en lugar de $`m^2`$. Con $`c_2/c_1=4`$ y $`n=10^{11}`$ el rango es $`[206{,}5;\,3038]`$, y el límite superior pasa de $`1000`$ porque la constante puede *mejorar* al crecer la entrada ($`c_2`$ en $`n`$ y $`c_1`$ en $`n'`$).
 
 La lectura razonable de “estima” es la que la conferencia usa: el costo se comporta como una constante por la función, sin saltos de constante.
 
-**Hipótesis (H) 1**. $`c(n)\sim a\,n^2`$ (resp. $`c(n)\sim a\,n\log n`$), es decir $`c(n)/(a\,n^2)\to1`$, con $`a>0`$ desconocida. La constante $`a`$ se cancela en $`(\ast)`$; los términos de menor orden se tratan en la sección <a href="#sec:menor" data-reference-type="ref" data-reference="sec:menor">5</a>.
+**Hipótesis (H) 1**. $`c(n)\sim a\,n^2`$ (resp. $`c(n)\sim a\,n\log n`$), es decir $`c(n)/(a\,n^2)\to1`$, con $`a>0`$ desconocida. La constante $`a`$ se cancela en $`(\ast)`$; los términos de menor orden se tratan en la sección 5.
 
 ## Algoritmo $`\Theta(n^2)`$
 
@@ -122,7 +122,7 @@ Para $`n`$ pequeño domina $`bn`$, el costo se comporta como lineal y el factor 
 
 ## Por qué este enfoque
 
-La alternativa es una tabla numérica, como la de C1 §7. Sirve de comprobación, pero no explica por qué ni cuánto depende el resultado de la constante o de $`n`$. La ecuación $`(\ast)`$ aísla la pregunta que importa, cuánta entrada compra un presupuesto $`K`$ veces mayor, y deja que $`a`$ se cancele. La sección <a href="#sec:hip" data-reference-type="ref" data-reference="sec:hip">2</a> dice además cuándo no se puede.
+La alternativa es una tabla numérica, como la de C1 §7. Sirve de comprobación, pero no explica por qué ni cuánto depende el resultado de la constante o de $`n`$. La ecuación $`(\ast)`$ aísla la pregunta que importa, cuánta entrada compra un presupuesto $`K`$ veces mayor, y deja que $`a`$ se cancele. La sección 2 dice además cuándo no se puede.
 
 **Una analogía.**
 
@@ -132,8 +132,75 @@ Si el costo es el área de un terreno cuadrado de lado $`n`$, mil veces más pre
 
 Código: `ej01_factores.py`. Resuelve con búsqueda binaria entera (la `mayor_n` de C1 §7), bisección sobre reales y punto fijo. Los `assert` verifican el lema, la subestimación de la elasticidad y $`L\le f^*\le K`$. Salida real completa:
 
-``` default
+<details>
+<summary><code>ej01_salida.txt</code></summary>
+
+```text
+=== A. Theta(n^2) con c(n) = a n^2 exacto: n'^2 = K n^2 ===
+sqrt(1000) = 31.622777
+  n0=        10  n'=         316  n'/n0=31.6000
+  n0=      1000  n'=       31622  n'/n0=31.6220
+  n0=   1000000  n'=    31622776  n'/n0=31.6228
+  n0=1000000000  n'= 31622776601  n'/n0=31.6228
+
+=== B. Theta(n^2) con menor orden: c(n) = n^2 + 1000 n ===
+  n0=        10  n'=        2717  n'/n0=271.7000
+  n0=      1000  n'=       44224  n'/n0=44.2240
+  n0=   1000000  n'=    31638084  n'/n0=31.6381
+  n0=1000000000  n'= 31622791913  n'/n0=31.6228
+
+=== C. Theta pura (c1=1, c2=4) NO fija el factor ===
+cotas: sqrt(K c1/c2) = 15.8114 <= f <= sqrt(K c2/c1) = 63.2456
+  c = n^2 (n<=1e6), 4n^2 despues: n0= 1000000 n'=  15811388 f=15.8114
+  c = 4n^2 (n<=1e6), meseta, n^2  : n0=  500000 n'=  31622776 f=63.2456
+  Analogo n log n con c2/c1=4, n=1e11: f_(K c1/c2) <= f <= f_(K c2/c1)
+    f_250 = 206.53   f_1000 = 791.46   f_4000 = 3038.13
+
+=== D. Theta(n log n), c(n) = a n log n: n' log n' = K n log n ===
+        n cota lema  elastic.  f exacto  f entero
+      1e1     250.0     123.5     288.9     288.9
+      1e2     400.0     291.6     431.5     431.5
+      1e3     500.0     417.5     524.5     524.5
+      1e4     571.4     508.4     590.7     590.7
+      1e6     666.7     627.3     679.3     679.3
+      1e9     750.0     727.6     757.6     757.6
+ 9.857e10     785.6     769.1     791.4     791.4
+     1e12     800.0     785.6     805.1     805.1
+     1e15     833.3     823.4     836.9     836.9
+(asserts: cota del lema <= f < K y elasticidad < f, tambien en 1e20, 1e50, 1e100)
+
+=== E. Convergencia de f <- K ln n / (ln n + ln f) desde f = K ===
+  n=1e+03  f*=524.4989  1/ln(f* n)=0.0759
+    paso 1: f=  500.000000  err=2.45e+01
+    paso 2: f=  526.410912  err=1.91e+00  err/err_ant=0.0780
+    paso 3: f=  524.354072  err=1.45e-01  err/err_ant=0.0758
+    paso 4: f=  524.509944  err=1.10e-02  err/err_ant=0.0759
+    paso 5: f=  524.498107  err=8.35e-04  err/err_ant=0.0759
+    paso 6: f=  524.499005  err=6.34e-05  err/err_ant=0.0759
+  n=1e+11  f*=791.4565  1/ln(f* n)=0.0312
+    paso 1: f=  785.714286  err=5.74e+00
+    paso 2: f=  791.636595  err=1.80e-01  err/err_ant=0.0314
+    paso 3: f=  791.450842  err=5.63e-03  err/err_ant=0.0312
+    paso 4: f=  791.456646  err=1.76e-04  err/err_ant=0.0312
+    paso 5: f=  791.456465  err=5.50e-06  err/err_ant=0.0312
+    paso 6: f=  791.456470  err=1.72e-07  err/err_ant=0.0312
+  cota cruda K/(L ln(L n)) en n=4: 0.9197 (< 1, y decrece con n: vale para todo n >= 4)
+  cota fina phi(L)/(L ln(L n)): n=2: 0.2804   n=3: 0.2209
+
+=== F. Discretizacion: razon c(n+1)/c(n) de n log n ===
+  n=       2  c(n+1)/c(n)=2.377444
+  n=       3  c(n+1)/c(n)=1.682479
+  n=      10  c(n+1)/c(n)=1.145532
+  n=    1000  c(n+1)/c(n)=1.001145
+  n= 1000000  c(n+1)/c(n)=1.000001
+  n0=2: n'=250  f_entero=125.0  f_real=125.5  cota lema=91.2
+  n0=3: n'=526  f_entero=175.3  f_real=175.3  cota lema=137.2
+  Rango completo con T en [c(n), c(n+1)), c = n log2 n:
+    n0=2: f_entero va de 125.0 (T=c(n)) a 263.0 (T->c(n+1)-)
+    n0=3: f_entero va de 175.3 (T=c(n)) a 275.0 (T->c(n+1)-)
 ```
+
+</details>
 
 **Casos elegidos.**
 
@@ -145,4 +212,4 @@ Código: `ej01_factores.py`. Resuelve con búsqueda binaria entera (la `mayor_n`
 
 - $`\Theta(n\log n)`$ bajo (H): $`n'=f\,n`$ con $`\dfrac{1000}{1+\log_n1000}\le f<1000`$. Vale $`\approx 525`$ en $`n=10^3`$, $`\approx 680`$ en $`10^6`$, $`\approx 791`$ en $`10^{11}`$.
 
-Vale en el word RAM, con la máquina nueva $`1000`$ veces más rápida en *todas* las operaciones. Con jerarquía de memoria el factor real puede ser menor, y la sección <a href="#sec:hip" data-reference-type="ref" data-reference="sec:hip">2</a> muestra cuánto.
+Vale en el word RAM, con la máquina nueva $`1000`$ veces más rápida en *todas* las operaciones. Con jerarquía de memoria el factor real puede ser menor, y la sección 2 muestra cuánto.

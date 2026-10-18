@@ -42,7 +42,7 @@ def con_verificacion(A):
     return {v for v, k in cuenta.items() if 3 * k > len(A)}
 ```
 
-Los *candidatos* son $`c_i`$ con $`k_i>0`$. El **orden de los `if` importa**: las dos coincidencias con candidato *activo* se miran antes que los contadores en $`0`$ (sección <a href="#sec:orden" data-reference-type="ref" data-reference="sec:orden">5</a>). El algoritmo solo usa igualdad entre elementos.
+Los *candidatos* son $`c_i`$ con $`k_i>0`$. El **orden de los `if` importa**: las dos coincidencias con candidato *activo* se miran antes que los contadores en $`0`$ (sección 5). El algoritmo solo usa igualdad entre elementos.
 
 ## Un lema de partición en ternas
 
@@ -82,7 +82,7 @@ En los cinco casos vale $`I`$.
 
 *Demostración.* Si $`v`$ no fuera candidato, solo aparecería en las ternas, y a lo sumo una vez por terna (sus tres valores son distintos): a lo sumo $`T\le n/3`$ veces. Contradicción con $`3\cdot\mathrm{cuenta}(v)>n`$. ◻
 
-Hay que guardar la forma exacta de este teorema, con su “si”, porque la sección <a href="#sec:sinverif" data-reference-type="ref" data-reference="sec:sinverif">7</a> depende de ella. La segunda pasada completa el algoritmo: cuenta cada candidato y deja los que pasan $`3k>n`$, y por el teorema no se pierde ninguno.
+Hay que guardar la forma exacta de este teorema, con su “si”, porque la sección 7 depende de ella. La segunda pasada completa el algoritmo: cuenta cada candidato y deja los que pasan $`3k>n`$, y por el teorema no se pierde ninguno.
 
 **Traza (salida 3)**
 
@@ -140,7 +140,7 @@ def sin_verificar(A):
 
 **La mitad correcta.**
 
-Por el teorema <a href="#teo:mg" data-reference-type="ref" data-reference="teo:mg">1</a>, todo valor con más de $`n/3`$ copias está entre los candidatos. La salida 4 lo comprueba en *todos* los arreglos de largo $`\le8`$ sobre $`4`$ símbolos y en $`20\,000`$ aleatorios.
+Por el teorema 1, todo valor con más de $`n/3`$ copias está entre los candidatos. La salida 4 lo comprueba en *todos* los arreglos de largo $`\le8`$ sobre $`4`$ símbolos y en $`20\,000`$ aleatorios.
 
 **La mitad falsa.**
 
@@ -166,7 +166,7 @@ Porcentaje de arreglos en que cada versión se equivoca, según el generador de 
 
 **Por qué “dos plantados” no la atrapa.**
 
-El generador planta dos valores con $`\lfloor n/3\rfloor+1`$ copias cada uno (y rellena con otros símbolos). Todos sus arreglos tienen exactamente dos valores frecuentes. Por el teorema <a href="#teo:mg" data-reference-type="ref" data-reference="teo:mg">1</a>, los dos son candidatos. Pero hay a lo sumo dos candidatos ($`c_1`$ y $`c_2`$). Entonces el conjunto de candidatos *es* el conjunto de frecuentes, y no queda un lugar libre para un falso positivo. Es la misma estructura que en C3 §5: “el de mayoría plantada no puede encontrarlo: todos sus arreglos tienen mayoría”; aquí, todos los arreglos llenan los dos lugares con frecuentes. Con *un solo* valor plantado queda un lugar libre, que casi siempre ocupa un falso positivo ($`57{,}8`$ %); con mayoría plantada, lo mismo ($`55{,}6`$ %): por ejemplo, `AAAB` tiene candidatos $`\{\mathtt A,\mathtt B\}`$ y `B` ($`1`$ copia, $`1>4/3`$ es falso) es un falso positivo. El programa lo verifica en $`20\,000`$ arreglos con exactamente dos frecuentes (salida 6): acierta siempre.
+El generador planta dos valores con $`\lfloor n/3\rfloor+1`$ copias cada uno (y rellena con otros símbolos). Todos sus arreglos tienen exactamente dos valores frecuentes. Por el teorema 1, los dos son candidatos. Pero hay a lo sumo dos candidatos ($`c_1`$ y $`c_2`$). Entonces el conjunto de candidatos *es* el conjunto de frecuentes, y no queda un lugar libre para un falso positivo. Es la misma estructura que en C3 §5: “el de mayoría plantada no puede encontrarlo: todos sus arreglos tienen mayoría”; aquí, todos los arreglos llenan los dos lugares con frecuentes. Con *un solo* valor plantado queda un lugar libre, que casi siempre ocupa un falso positivo ($`57{,}8`$ %); con mayoría plantada, lo mismo ($`55{,}6`$ %): por ejemplo, `AAAB` tiene candidatos $`\{\mathtt A,\mathtt B\}`$ y `B` ($`1`$ copia, $`1>4/3`$ es falso) es un falso positivo. El programa lo verifica en $`20\,000`$ arreglos con exactamente dos frecuentes (salida 6): acierta siempre.
 
 **Cuál es el análogo del generador binario, y por qué la razón de C3 no se traslada.**
 
@@ -184,7 +184,7 @@ Es el análogo exacto de “contador $`=`$ diferencia” de C3. Pero ahora *el a
 
 **Con cuatro o más símbolos la regla ya no es exacta.**
 
-La hipótesis del lema es que toda terna lleva *todos* los símbolos, y con cuatro símbolos una terna puede dejar fuera a uno. La entrada más corta donde la regla $`2k_i>k_j`$ falla es `ABCD`: la terna $`(\mathtt A,\mathtt B,\mathtt C)`$ no contiene a `D`, el estado deja a `D` como candidato con $`k=1`$ y el otro contador en $`0`$, y la regla ($`2\cdot1>0`$) lo devuelve aunque tiene $`1`$ copia de $`4`$. Falla en $`25{,}1`$ % de los arreglos con $`4`$ símbolos, $`40{,}0`$ % con $`5`$ y $`59{,}3`$ % con $`8`$ (salida 7). Es la lección del tema: con dos candidatos, el atajo parece correcto para el alfabeto *pequeño* (con la regla refinada) y deja de serlo al agrandarlo, y la demostración dice dónde buscar: C3 §5 cierra con “leer la hipótesis de un teorema es leer la lista de casos que hay que probar”, y el resumen del tema (§3) con “la demostración verifica que pensaste bien, y además te dice qué probar”. La hipótesis del teorema <a href="#teo:mg" data-reference-type="ref" data-reference="teo:mg">1</a> es “si $`v`$ tiene más de $`n/3`$ copias”; lo que no cubre es el candidato *sin* esa propiedad.
+La hipótesis del lema es que toda terna lleva *todos* los símbolos, y con cuatro símbolos una terna puede dejar fuera a uno. La entrada más corta donde la regla $`2k_i>k_j`$ falla es `ABCD`: la terna $`(\mathtt A,\mathtt B,\mathtt C)`$ no contiene a `D`, el estado deja a `D` como candidato con $`k=1`$ y el otro contador en $`0`$, y la regla ($`2\cdot1>0`$) lo devuelve aunque tiene $`1`$ copia de $`4`$. Falla en $`25{,}1`$ % de los arreglos con $`4`$ símbolos, $`40{,}0`$ % con $`5`$ y $`59{,}3`$ % con $`8`$ (salida 7). Es la lección del tema: con dos candidatos, el atajo parece correcto para el alfabeto *pequeño* (con la regla refinada) y deja de serlo al agrandarlo, y la demostración dice dónde buscar: C3 §5 cierra con “leer la hipótesis de un teorema es leer la lista de casos que hay que probar”, y el resumen del tema (§3) con “la demostración verifica que pensaste bien, y además te dice qué probar”. La hipótesis del teorema 1 es “si $`v`$ tiene más de $`n/3`$ copias”; lo que no cubre es el candidato *sin* esa propiedad.
 
 **El generador binario sí atrapa el atajo ingenuo.**
 
@@ -192,10 +192,82 @@ Con dos símbolos nunca se forma una terna, así que los candidatos son *todos* 
 
 ## Comprobación experimental
 
-Código: `ej08_misra_gries.py`. Vigila el invariante $`I`$ con `assert` en cada prefijo: las copias existen, $`c_1\ne c_2`$ si ambos activos, y el resto se parte en ternas (por el lema <a href="#lema:ternas" data-reference-type="ref" data-reference="lema:ternas">1</a>). Salida real:
+Código: `ej08_misra_gries.py`. Vigila el invariante $`I`$ con `assert` en cada prefijo: las copias existen, $`c_1\ne c_2`$ si ambos activos, y el resto se parte en ternas (por el lema 1). Salida real:
 
-``` default
+<details>
+<summary><code>ej08_salida.txt</code></summary>
+
+```text
+=== 1. Lema: un multiconjunto se parte en ternas de distintos  <=>  |S| multiplo de 3 y ningun valor > |S|/3 ===
+  715 multiconjuntos de tamano <= 9 sobre 4 valores: criterio == fuerza bruta
+
+=== 2. Invariante vigilado con assert (primera pasada, orden correcto) ===
+  6000 arreglos aleatorios (alfabetos de 2 a 5 simbolos): invariante comprobado en 44906 prefijos, sin fallos
+  exhaustivo: todos los arreglos sobre 4 simbolos de largo <= 8: 669924 prefijos, sin fallos
+
+=== 3. Traza de un ejemplo: A = B A C A B A D A C ===
+  i  x  caso      c1 k1  c2 k2
+  1  B  c1 libre   B  1   -  0
+  2  A  c2 libre   B  1   A  1
+  3  C  terna      -  0   -  0
+  4  A  c1 libre   A  1   -  0
+  5  B  c2 libre   A  1   B  1
+  6  A  x = c1     A  2   B  1
+  7  D  terna      A  1   -  0
+  8  A  x = c1     A  2   -  0
+  9  C  c2 libre   A  2   C  1
+  n = 9, terna = 3 copias distintas; pesados (> n/3 = 3.00): ['A']; candidatos: ['A', 'C']; con verificacion: ['A']
+
+=== 4. Correctitud contra el oraculo (con verificacion) y mitad buena del algoritmo sin verificar ===
+  todos los arreglos sobre 4 simbolos de largo <= 8: con_verificacion == oraculo; pesados contenidos en candidatos
+  20000 arreglos aleatorios mas (alfabetos de 2 a 10 simbolos, largo hasta 40): sin fallos
+
+=== 5. El orden equivocado de los if produce c1 == c2 y falla ===
+  entrada mas corta (alfabeto ABC) donde falta un pesado entre los candidatos: AAB
+  i  x   c1 k1  c2 k2   (orden equivocado)
+  1  A   A  1   -  0
+  2  A   A  1   A  1
+  3  B   -  0   -  0
+  candidatos finales: []; pesados: ['A']; con el orden correcto: ['A', 'B']
+  arreglos sobre ABC de largo <= 7 donde el orden equivocado pierde un pesado: 570 de 3279
+
+=== 6. La version sin verificar: falsos positivos y generadores de prueba ===
+  Entrada mas corta con falso positivo, por tamano de alfabeto (arreglos que usan EXACTAMENTE ese numero de simbolos):
+    2 simbolos: AAB  candidatos ['A', 'B'], pesados ['A']
+    3 simbolos: AAABBC  candidatos ['A', 'B'], pesados ['A']
+    4 simbolos: ABCD  candidatos ['D'], pesados []
+
+          generador  sin verificar  dos pasadas   (4000 arreglos de largo 4..15 por generador)
+      dos plantados           0.0%         0.0%
+       uno plantado          57.8%         0.0%
+   mayoria plantada          55.6%         0.0%
+            binario          37.0%         0.0%
+         3 simbolos          41.0%         0.0%
+         5 simbolos          58.3%         0.0%
+    todos distintos          67.4%         0.0%
+
+  Para los generadores de 'dos plantados': candidatos = pesados por cardinalidad (<= 2 candidatos, 2 pesados):
+    20000 arreglos con exactamente dos pesados: la version sin verificar acierta siempre
+
+=== 7. Alfabeto de 3 simbolos (el analogo del binario de C3): caracterizacion exacta ===
+  Toda terna de distintos sobre 3 simbolos tiene una copia de cada uno; luego cuenta(c_i) = k_i + T,
+  cuenta(v) = T para v no candidato, n = 3T + k1 + k2, y  c_i (k_i > 0) es frecuente  <=>  2 k_i > k_j.
+  assert en los 88573 arreglos sobre {A,B,C} de largo <= 10: cuenta(v) = T + k_i, y regla '2 k_i > k_j' == oraculo
+  (tambien exacta con 1 y 2 simbolos: son casos de 3 simbolos con alguna cuenta en 0)
+  AAABBC: estado A:2, B:1, T = 1;  B: 2*1 > 2? False -> falso positivo del atajo; regla 2k: ['A']; oraculo ['A']
+  Con 4 o mas simbolos la regla deja de ser exacta (las ternas ya no llevan todos los simbolos):
+    regla 2k: entrada mas corta sobre 4 simbolos donde falla: ABCD  (estado ('D', 1, 'B', 0), devuelve ['D'], oraculo [])
+
+   simbolos  atajo (k>0)  regla 2k_i>k_j   (4000 arreglos de largo 4..15 por tamano de alfabeto)
+          1         0.0%            0.0%
+          2        35.4%            0.0%
+          3        41.4%            0.0%
+          4        52.6%           25.1%
+          5        57.8%           40.0%
+          8        65.2%           59.3%
 ```
+
+</details>
 
 **Casos elegidos.**
 

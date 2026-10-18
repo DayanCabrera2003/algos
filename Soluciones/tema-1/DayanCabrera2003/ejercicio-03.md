@@ -28,7 +28,7 @@ Modelo: costo en comparaciones y operaciones de palabra del word RAM; la pila de
 
 - `mínimo`$`()`$: devuelve $`\min\{s_0,\dots,s_{k-1}\}`$. *Precondición:* $`k\ge1`$.
 
-Las operaciones con precondición violada no están especificadas; las implementaciones de abajo lanzan `IndexError` (sección <a href="#sec:exp" data-reference-type="ref" data-reference="sec:exp">6</a>). Lo que hay que demostrar es que, después de cualquier secuencia válida de operaciones, `mínimo` devuelve $`\min S`$. No hay ciclos, así que no hay potencial de terminación: cada operación es de línea recta. La herramienta es el *invariante de la estructura* (C3 §1): una propiedad que se cumple al crear la pila y que cada operación preserva.
+Las operaciones con precondición violada no están especificadas; las implementaciones de abajo lanzan `IndexError` (sección 6). Lo que hay que demostrar es que, después de cualquier secuencia válida de operaciones, `mínimo` devuelve $`\min S`$. No hay ciclos, así que no hay potencial de terminación: cada operación es de línea recta. La herramienta es el *invariante de la estructura* (C3 §1): una propiedad que se cumple al crear la pila y que cada operación preserva.
 
 **Modelo.** Word RAM de C1: leer, escribir y comparar palabras cuesta $`1`$. Medimos el costo en comparaciones de elementos y en accesos a palabras.
 
@@ -55,7 +55,7 @@ class PilaA:
 
 *Conclusión.* Si $`k\ge1`$, `mínimo` devuelve $`M[k-1]=\min S[0..k-1]=\min S`$.
 
-**Costo.** `push`: una comparación y dos escrituras. `pop`, `top`, `mínimo`: $`0`$ comparaciones. Todo $`O(1)`$ *en el peor caso* siempre que el almacenamiento no cambie de tamaño (sección <a href="#sec:costos" data-reference-type="ref" data-reference="sec:costos">5</a>). Memoria extra: $`|M|=k`$ palabras.
+**Costo.** `push`: una comparación y dos escrituras. `pop`, `top`, `mínimo`: $`0`$ comparaciones. Todo $`O(1)`$ *en el peor caso* siempre que el almacenamiento no cambie de tamaño (sección 5). Memoria extra: $`|M|=k`$ palabras.
 
 **Variante en lista enlazada.** Cada nodo guarda `(valor, mínimo de su cola, siguiente)`. Es la misma estructura con $`O(1)`$ de peor caso para `push` porque no hay redimensionamiento (supone que reservar un nodo cuesta $`O(1)`$, como en el word RAM).
 
@@ -89,11 +89,11 @@ class PilaB:
 
 *Inicialización.* $`S=M=\varnothing`$ y no hay récords.
 
-*Mantenimiento de `push`$`(x)`$.* La posición nueva $`k`$ es récord si $`k=0`$ o $`x\le\min S[0..k-1]=M[-1]`$ (lema <a href="#lema:record" data-reference-type="ref" data-reference="lema:record">1</a>). El código añade $`x`$ a $`M`$ exactamente en ese caso, y los récords anteriores no cambian.
+*Mantenimiento de `push`$`(x)`$.* La posición nueva $`k`$ es récord si $`k=0`$ o $`x\le\min S[0..k-1]=M[-1]`$ (lema 1). El código añade $`x`$ a $`M`$ exactamente en ese caso, y los récords anteriores no cambian.
 
-*Mantenimiento de `pop`.* Sea $`y`$ el tope. Los récords de $`S[0..k-2]`$ son los de $`S`$ sin $`y`$ (ser récord solo mira los predecesores). Por el lema <a href="#lema:record" data-reference-type="ref" data-reference="lema:record">1</a>, $`y`$ es récord $`\iff y=M[-1]`$, y entonces es el último elemento de $`M`$: el código lo quita justo en ese caso. *Aquí es donde la igualdad importa:* la condición “$`y=M[-1]`$” reconoce récords *no estrictos*.
+*Mantenimiento de `pop`.* Sea $`y`$ el tope. Los récords de $`S[0..k-2]`$ son los de $`S`$ sin $`y`$ (ser récord solo mira los predecesores). Por el lema 1, $`y`$ es récord $`\iff y=M[-1]`$, y entonces es el último elemento de $`M`$: el código lo quita justo en ese caso. *Aquí es donde la igualdad importa:* la condición “$`y=M[-1]`$” reconoce récords *no estrictos*.
 
-*Conclusión.* `mínimo` devuelve $`M[-1]=\min S`$ (lema <a href="#lema:record" data-reference-type="ref" data-reference="lema:record">1</a>).
+*Conclusión.* `mínimo` devuelve $`M[-1]=\min S`$ (lema 1).
 
 **Costo.** `push`: una comparación; `pop`: una comparación; `mínimo`: ninguna. $`O(1)`$ en el peor caso.
 
@@ -107,7 +107,7 @@ La figura muestra las tres pilas auxiliares tras los siete `push`, de abajo haci
 
 **La entrada más corta.** La búsqueda exhaustiva sobre todas las secuencias válidas hasta largo $`7`$ con valores $`\{0,1,2\}`$ ($`141\,519`$ secuencias) encuentra que $`B(<)`$ difiere del oráculo en $`7168`$ de ellas, y la más corta tiene largo $`4`$: `push`$`(v)`$, `push`$`(v)`$, `pop`, y luego `pop` o `mínimo`, para $`v\in\{0,1,2\}`$ (seis secuencias, todas del mismo tipo). Con $`B(<)`$ la ejecución termina en `IndexError` porque $`M`$ quedó vacía; con $`B(\le)`$ da $`[0,0]`$. No hay ninguna más corta: con tres operaciones ninguna sale distinta del oráculo.
 
-**Qué anuncia la demostración.** El lema <a href="#lema:record" data-reference-type="ref" data-reference="lema:record">1</a> habla de récords *no estrictos*. Una variante estricta necesitaría, además de $`M`$, saber cuántas copias del mínimo hay (se guarda $`(\text{valor},\text{cuenta})`$) para que `pop` sepa si $`y`$ era el único. Los duplicados del mínimo son la estructura que las pruebas con valores distintos no ven.
+**Qué anuncia la demostración.** El lema 1 habla de récords *no estrictos*. Una variante estricta necesitaría, además de $`M`$, saber cuántas copias del mínimo hay (se guarda $`(\text{valor},\text{cuenta})`$) para que `pop` sepa si $`y`$ era el único. Los duplicados del mínimo son la estructura que las pruebas con valores distintos no ven.
 
 ## Costos y memoria
 
@@ -131,12 +131,83 @@ La versión B *no ahorra nada* en una secuencia decreciente, ni en una constante
 
 Código: `ej03_pila_minimo.py`. Compara las versiones contra un oráculo con $`\min S`$ ingenuo, vigila los invariantes $`I_A`$ y $`I_B`$ después de *cada* operación, y verifica exhaustivamente. Salida real:
 
-``` default
+<details>
+<summary><code>ej03_salida.txt</code></summary>
+
+```text
+=== 1. Exhaustivo: toda secuencia valida hasta largo 7, valores {0,1,2}, contra el oraculo ===
+  141519 secuencias
+  version      A: 0 secuencias que difieren del oraculo
+  version  B(<=): 0 secuencias que difieren del oraculo
+  version   B(<): 7168 secuencias que difieren del oraculo
+  version      C: 0 secuencias que difieren del oraculo
+  B con '<': secuencias mas cortas que la rompen (largo 4): 6
+    ['push(0)', 'push(0)', 'pop', 'pop']
+    ['push(0)', 'push(0)', 'pop', 'min']
+    ['push(1)', 'push(1)', 'pop', 'pop']
+    ['push(1)', 'push(1)', 'pop', 'min']
+    ['push(2)', 'push(2)', 'pop', 'pop']
+    ['push(2)', 'push(2)', 'pop', 'min']
+  ejecucion de la primera, B(<) contra el oraculo: ('ERROR', 'IndexError') vs [0, 0]
+  y con B(<=): [0, 0]
+
+=== 1b. El ejemplo de la figura: push 5,3,3,7,2,2,9 y luego pop, pop, minimo ===
+       A: salidas [9, 2, 2]   M final = [5, 3, 3, 3, 2]
+   B(<=): salidas [9, 2, 2]   M final = [5, 3, 3, 2]
+    B(<): salidas [9, 2, 3]   M final = [5, 3]
+  oraculo: salidas [9, 2, 2]
+  tras los 7 pushes:  M_A = [5, 3, 3, 3, 2, 2, 2]  M_B(<=) = [5, 3, 3, 2, 2]  M_B(<) = [5, 3, 2]
+
+=== 2. Aleatorio con invariante vigilado (A, B(<=)) y salidas contra el oraculo ===
+  3000 secuencias de 80 operaciones (alfabetos de 2, 3, 5 y 1000 valores): 240000 operaciones, sin fallos
+
+=== 3. Casos borde: pila vacia (precondicion) ===
+       A: pop: IndexError, top: IndexError, minimo: IndexError
+   B(<=): pop: IndexError, top: IndexError, minimo: IndexError
+       C: pop: IndexError, top: IndexError, minimo: IndexError
+
+=== 4. Memoria extra en el peor caso (|M| tras n pushes, n = 1000) ===
+       creciente: |S|=1000  A: |M|=1000  B(<=): |M|=1  B(<) [incorrecta]: |M|=1
+     decreciente: |S|=1000  A: |M|=1000  B(<=): |M|=1000  B(<) [incorrecta]: |M|=1000
+   todos iguales: |S|=1000  A: |M|=1000  B(<=): |M|=1000  B(<) [incorrecta]: |M|=1
+      permutacion: media |M| =    7.62, maximo   16  (H_n = 7.49)
+    alfabeto de 3: media |M| =  334.45, maximo  378
+  alfabeto de 100: media |M| =   14.90, maximo   25
+
+=== 5. Peor caso por operacion (comparaciones), 100000 operaciones aleatorias ===
+       A: maximo de comparaciones por operacion = {'push': 1, 'pop': 0, 'min': 0}
+   B(<=): maximo de comparaciones por operacion = {'push': 1, 'pop': 1, 'min': 0}
+
+=== 6. Arreglo dinamico (duplicando): coste de un push suelto vs amortizado ===
+     1025 pushes: peor push =    1025, media = 2.997
+    16385 pushes: peor push =   16385, media = 3.000
+   262145 pushes: peor push =  262145, media = 3.000
+
+=== 7. Version C (2x - min): memoria extra O(1) y desbordamiento en w bits ===
+  enteros sin limite: ya verificada contra el oraculo en la seccion 1 y 2
+  w=4: secuencias que rompen, por largo: largo 1: 0, largo 2: 0, largo 3: 128
+    la primera de largo minimo: ['push(-7)', 'push(-8)', 'pop'] -> [7] (oraculo: [-8] )
+  w=8: secuencias que rompen, por largo: largo 1: 0, largo 2: 0, largo 3: 32768
+    la primera de largo minimo: ['push(-127)', 'push(-128)', 'pop'] -> [127] (oraculo: [-128] )
+    detalle: push(100), push(-100): E = [100, -44], mn = -100; 2*(-100)-100 = -300 -> -44 en 8 bits
+    pop devuelve -44 (debia ser -100); pop devuelve 100 (debia ser 100)
+  w= 8: valores en todo el rango: fallan 12247/20000; en |x| <= 2^(w-3)=32: aciertan 20000/20000
+  w=16: valores en todo el rango: fallan 12305/20000; en |x| <= 2^(w-3)=8192: aciertan 20000/20000
+  w=32: valores en todo el rango: fallan 12254/20000; en |x| <= 2^(w-3)=536870912: aciertan 20000/20000
+
+=== 8. Cola con minimo con dos pilas (A): contra un oraculo y coste amortizado ===
+  500 secuencias de 300 operaciones: salidas iguales al oraculo (deque + min ingenuo);
+  en todos los prefijos: operaciones de pila reales <= 3*encolar + 1*desencolar (potencial 2|ent|)
+  1000 encolar + 1000 desencolar: 4000 operaciones de pila = 4m (cota amortizada 3m + m = 4m)
+  100000 encolar + 100000 desencolar: 400000 operaciones de pila = 4m (cota amortizada 3m + m = 4m)
+  un desencolar suelto con 10^5 elementos en la entrada cuesta 200001 operaciones de pila (O(n), no O(1))
 ```
+
+</details>
 
 **Casos elegidos.**
 
-*Típicos:* $`3000`$ secuencias aleatorias de $`80`$ operaciones con alfabetos de $`2`$, $`3`$, $`5`$ y $`1000`$ valores ($`240\,000`$ operaciones, invariantes vigilados). *Bordes:* pila vacía (precondición, `IndexError`), un solo elemento, todos iguales, creciente, decreciente. *Exhaustivo:* las $`141\,519`$ secuencias válidas hasta largo $`7`$. *Adversariales:* los duplicados del mínimo, que es lo que señala la demostración (sección <a href="#sec:menor" data-reference-type="ref" data-reference="sec:menor">4</a>) y lo que rompe $`B(<)`$.
+*Típicos:* $`3000`$ secuencias aleatorias de $`80`$ operaciones con alfabetos de $`2`$, $`3`$, $`5`$ y $`1000`$ valores ($`240\,000`$ operaciones, invariantes vigilados). *Bordes:* pila vacía (precondición, `IndexError`), un solo elemento, todos iguales, creciente, decreciente. *Exhaustivo:* las $`141\,519`$ secuencias válidas hasta largo $`7`$. *Adversariales:* los duplicados del mínimo, que es lo que señala la demostración (sección 4) y lo que rompe $`B(<)`$.
 
 ## Algo más fino: memoria extra $`O(1)`$ con $`2x-\mathit{mn}`$
 

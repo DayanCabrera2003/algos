@@ -20,7 +20,7 @@ Modelo: la única operación es comparar $`x`$ con una entrada $`A[i][j]`$ (tres
 
 **Entrada:** una matriz $`A[0..n-1][0..n-1]`$ y un valor $`x`$. **Orden:** las filas y las columnas son *no decrecientes*: $`A[i][j]\le A[i][j+1]`$ y $`A[i][j]\le A[i+1][j]`$ (se admiten duplicados). Para la cota inferior se usan matrices *estrictamente* crecientes por filas y columnas ($`A[i][j]<A[i][j+1]`$ y $`A[i][j]<A[i+1][j]`$); aun así puede haber entradas repetidas en celdas no alineadas, por ejemplo $`A[0][2]=A[1][1]=A[2][0]`$ en $`A[i][j]=i+j`$. **Salida:** sí/no, según $`x`$ aparezca en $`A`$.
 
-**Operación y costo.** Una *consulta* compara $`x`$ con $`A[i][j]`$ y devuelve $`<`$, $`=`$ o $`>`$; el costo es el número de consultas. *No* se permite comparar dos entradas de la matriz entre sí. Las cotas de este ejercicio valen en ese modelo; con comparaciones entre entradas, el adversario de la sección <a href="#sec:cota" data-reference-type="ref" data-reference="sec:cota">3</a> tendría que contestarlas también, y no afirmo nada sobre ese modelo.
+**Operación y costo.** Una *consulta* compara $`x`$ con $`A[i][j]`$ y devuelve $`<`$, $`=`$ o $`>`$; el costo es el número de consultas. *No* se permite comparar dos entradas de la matriz entre sí. Las cotas de este ejercicio valen en ese modelo; con comparaciones entre entradas, el adversario de la sección 3 tendría que contestarlas también, y no afirmo nada sobre ese modelo.
 
 **Relación entre las clases.** Un algoritmo correcto para matrices no decrecientes lo es para las estrictas (son un caso particular). Una cota inferior probada con matrices estrictas vale también para las no decrecientes. El algoritmo vale para las dos y la cota se prueba con las estrictas: la cota exacta $`2n-1`$ vale en ambas clases.
 
@@ -90,7 +90,7 @@ Contesta cada consulta a $`x`$ contra $`(i,j)`$ según $`N`$: $`x>A[i][j]`$ si $
 
 **Teorema 1**. *Todo algoritmo correcto en el modelo de comparaciones de $`x`$ con entradas hace al menos $`2n-1`$ consultas en el peor caso, incluso restringido a matrices estrictamente crecientes.*
 
-*Demostración.* Contra el adversario, sea $`T`$ el conjunto de celdas que el algoritmo consulta antes de responder. Supongamos que existe $`p\in P\setminus T`$. La matriz $`N`$ y la matriz $`N_p`$ dan las mismas respuestas a todas las consultas de $`T`$ (difieren solo en la celda $`p`$, que no se consultó). El algoritmo es determinista, así que con ambas matrices recorre el mismo camino y da la misma respuesta. Pero $`x\notin N`$ y $`x\in N_p`$ (lema <a href="#lema:fam" data-reference-type="ref" data-reference="lema:fam">1</a>). Se equivoca en una de las dos, contradicción. Entonces $`P\subseteq T`$ y $`|T|\ge|P|=2n-1`$. ◻
+*Demostración.* Contra el adversario, sea $`T`$ el conjunto de celdas que el algoritmo consulta antes de responder. Supongamos que existe $`p\in P\setminus T`$. La matriz $`N`$ y la matriz $`N_p`$ dan las mismas respuestas a todas las consultas de $`T`$ (difieren solo en la celda $`p`$, que no se consultó). El algoritmo es determinista, así que con ambas matrices recorre el mismo camino y da la misma respuesta. Pero $`x\notin N`$ y $`x\in N_p`$ (lema 1). Se equivoca en una de las dos, contradicción. Entonces $`P\subseteq T`$ y $`|T|\ge|P|=2n-1`$. ◻
 
 **Cuál de las cotas se demuestra.**
 
@@ -106,8 +106,68 @@ El argumento de información cuenta salidas. Aquí hay $`n^2+1`$ salidas si pedi
 
 Código: `ej06_matriz.py`. Las consultas pasan por un objeto `Oraculo` que cuenta y registra cada una. Salida real:
 
-``` default
+<details>
+<summary><code>ej06_salida.txt</code></summary>
+
+```text
+=== 1. Escalera contra fuerza bruta en matrices aleatorias con duplicados ===
+  58473 pares (matriz, x), n = 1..30: la escalera coincide con la fuerza bruta y usa <= 2n-1 comparaciones
+  maximo observado por n (aleatorias): {1: 1, 2: 3, 3: 5, 5: 9, 10: 19, 20: 39, 30: 55}
+
+=== 2. Peor caso exacto: A[i][j] = 2(i+j), x = 2n-3 ===
+  n = 1..100: comparaciones == 2n-1 en todos salvo 0
+  n=5: celdas consultadas en orden: [(0, 4), (0, 3), (1, 3), (1, 2), (2, 2), (2, 1), (3, 1), (3, 0), (4, 0)]
+  Exhaustivo para n = 2 (entradas 0..4) y n = 3 (entradas 0..3): maximo de comparaciones sobre toda matriz ordenada y todo x
+    n=2: 105 matrices ordenadas, maximo = 3 (2n-1 = 3)
+    n=3: 980 matrices ordenadas, maximo = 5 (2n-1 = 5)
+
+=== 3. El adversario como programa: x = 2n-3, responde segun N[i][j] = 2(i+j) ===
+  escalera:
+    n= 3:   5 comparaciones; celdas de las 2n-1 sin consultar: 0; correcto (consulto las 2n-1 celdas)
+    n= 6:  11 comparaciones; celdas de las 2n-1 sin consultar: 0; correcto (consulto las 2n-1 celdas)
+    n=12:  23 comparaciones; celdas de las 2n-1 sin consultar: 0; correcto (consulto las 2n-1 celdas)
+  omite (n-1,0):
+    n= 3:   4 comparaciones; celdas de las 2n-1 sin consultar: 1; ERROR en N_p con p=(2, 0)
+    n= 6:  10 comparaciones; celdas de las 2n-1 sin consultar: 1; ERROR en N_p con p=(5, 0)
+    n=12:  22 comparaciones; celdas de las 2n-1 sin consultar: 1; ERROR en N_p con p=(11, 0)
+  solo antidiagonal:
+    n= 3:   3 comparaciones; celdas de las 2n-1 sin consultar: 2; ERROR en N_p con p=(0, 1)
+    n= 6:   6 comparaciones; celdas de las 2n-1 sin consultar: 5; ERROR en N_p con p=(0, 4)
+    n=12:  12 comparaciones; celdas de las 2n-1 sin consultar: 11; ERROR en N_p con p=(0, 10)
+  esquina (0,0), n^2:
+    n= 3:   9 comparaciones; celdas de las 2n-1 sin consultar: 0; correcto (consulto las 2n-1 celdas)
+    n= 6:  36 comparaciones; celdas de las 2n-1 sin consultar: 0; correcto (consulto las 2n-1 celdas)
+    n=12: 144 comparaciones; celdas de las 2n-1 sin consultar: 0; correcto (consulto las 2n-1 celdas)
+  Matriz del adversario para 'solo antidiagonal', n=3 (x = 3, celda p = (0, 1) puesta a x):
+     [0, 3, 4]
+     [2, 4, 6]
+     [4, 6, 8]
+
+=== 4. Informacion contra el adversario (n x n) ===
+      n  log2(n^2+1)  log2 C(2n,n)  2n-1 (exacto)
+      1          1.0           1.0              1
+      2          2.3           2.6              3
+      5          4.7           8.0              9
+     10          6.7          17.5             19
+     50         11.3          96.3             99
+    100         13.3         195.9            199
+   1000         19.9        1994.2           1999
+  C(2n,n) = numero de fronteras monotonas posibles {A < x}; cada comparacion da 2 respuestas utiles
+
+=== 5. Matriz m x n con m <= n: escalera contra galopar por filas ===
+  m= 4, n=   4: escalera peor=   7 (m+n-1=   7);  galope peor medido=   9; cota 2m(log2(1+n/m)+2)+m =    28.0;  cota inferior m*ceil(log2(n/m+1)) = 4
+  m= 4, n=  64: escalera peor=  67 (m+n-1=  67);  galope peor medido=  31; cota 2m(log2(1+n/m)+2)+m =    52.7;  cota inferior m*ceil(log2(n/m+1)) = 20
+  m= 8, n= 512: escalera peor= 519 (m+n-1= 519);  galope peor medido=  68; cota 2m(log2(1+n/m)+2)+m =   136.4;  cota inferior m*ceil(log2(n/m+1)) = 56
+  m=16, n=4096: escalera peor=4111 (m+n-1=4111);  galope peor medido= 155; cota 2m(log2(1+n/m)+2)+m =   336.2;  cota inferior m*ceil(log2(n/m+1)) = 144
+  m=64, n=  64: escalera peor= 127 (m+n-1= 127);  galope peor medido= 143; cota 2m(log2(1+n/m)+2)+m =   448.0;  cota inferior m*ceil(log2(n/m+1)) = 64
+
+=== 6. Familia de bloques (cota inferior m x n): cada fila tiene su bloque, bloques disjuntos ===
+  familia valida (filas y columnas estrictamente crecientes, x=0 ausente) en 600 matrices aleatorias: True
+  m= 8, n= 512, s=64: el galope hace hasta 105 comparaciones; cota inferior m*ceil(log2(s+1)) = 56
+  m=16, n=4096, s=256: el galope hace hasta 273 comparaciones; cota inferior m*ceil(log2(s+1)) = 144
 ```
+
+</details>
 
 **Casos elegidos.**
 
@@ -123,7 +183,7 @@ Con $`m=n`$ da $`O(n)`$ (la constante es peor que la de la escalera: el programa
 
 **Cota inferior.**
 
-Se necesitan $`m\lceil\log_2(\lfloor n/m\rfloor+1)\rceil`$ comparaciones. Sea $`s=\lfloor n/m\rfloor`$. La fila $`i`$ tiene un *bloque* de $`s`$ columnas, $`[(m-1-i)s,\,(m-i)s-1]`$, y los bloques son disjuntos. A la izquierda del bloque los valores son muy negativos y a la derecha muy positivos, de modo que cada columna tiene, de arriba abajo, valores negativos, a lo sumo una celda de bloque y valores positivos: la matriz es estrictamente creciente (el programa lo verifica en $`600`$ matrices). Dentro de cada bloque hay $`s`$ valores crecientes alrededor de $`x=0`$, con $`x`$ en un hueco arbitrario, y cualquiera de los dos vecinos del hueco puede cambiarse a $`x`$. Las consultas fuera de los bloques tienen respuesta fija, y cada bloque es una búsqueda en un arreglo ordenado de $`s`$ elementos distintos, independiente de los demás: por el lema 2 del ejercicio 2 (C5 §3), decidir si $`x`$ está en el bloque requiere $`\lceil\log_2(s+1)\rceil`$ consultas *dentro de ese bloque*. (El lema 2 del ejercicio 2 está enunciado con el arreglo fijo y $`x`$ variando entre los huecos; aquí $`x=0`$ es fijo y el contenido del bloque varía, pero es lo mismo: un algoritmo de comparaciones solo ve el orden relativo entre $`x`$ y las entradas, y lo único que cuenta es en qué hueco del bloque queda $`x`$.) Si en un bloque se hacen menos, el adversario del ejercicio 2 deja dos contenidos del bloque consistentes con las respuestas, uno con $`x`$ y otro sin $`x`$; combinados con el contenido fijo de los demás bloques dan dos matrices de la familia con las mismas respuestas y distinta salida. Total: $`m\lceil\log_2(s+1)\rceil`$. Para $`m=n`$ ($`s=1`$) da $`n`$, menos que los $`2n-1`$ de la sección <a href="#sec:cota" data-reference-type="ref" data-reference="sec:cota">3</a>: las dos construcciones se complementan. No afirmo que $`m\log(n/m)`$ sea exacto en las constantes (la salida 6 muestra, para $`m=16`$, $`n=4096`$, que el galope hace $`273`$ consultas en el peor de las familias medidas, contra $`144`$ de cota inferior).
+Se necesitan $`m\lceil\log_2(\lfloor n/m\rfloor+1)\rceil`$ comparaciones. Sea $`s=\lfloor n/m\rfloor`$. La fila $`i`$ tiene un *bloque* de $`s`$ columnas, $`[(m-1-i)s,\,(m-i)s-1]`$, y los bloques son disjuntos. A la izquierda del bloque los valores son muy negativos y a la derecha muy positivos, de modo que cada columna tiene, de arriba abajo, valores negativos, a lo sumo una celda de bloque y valores positivos: la matriz es estrictamente creciente (el programa lo verifica en $`600`$ matrices). Dentro de cada bloque hay $`s`$ valores crecientes alrededor de $`x=0`$, con $`x`$ en un hueco arbitrario, y cualquiera de los dos vecinos del hueco puede cambiarse a $`x`$. Las consultas fuera de los bloques tienen respuesta fija, y cada bloque es una búsqueda en un arreglo ordenado de $`s`$ elementos distintos, independiente de los demás: por el lema 2 del ejercicio 2 (C5 §3), decidir si $`x`$ está en el bloque requiere $`\lceil\log_2(s+1)\rceil`$ consultas *dentro de ese bloque*. (El lema 2 del ejercicio 2 está enunciado con el arreglo fijo y $`x`$ variando entre los huecos; aquí $`x=0`$ es fijo y el contenido del bloque varía, pero es lo mismo: un algoritmo de comparaciones solo ve el orden relativo entre $`x`$ y las entradas, y lo único que cuenta es en qué hueco del bloque queda $`x`$.) Si en un bloque se hacen menos, el adversario del ejercicio 2 deja dos contenidos del bloque consistentes con las respuestas, uno con $`x`$ y otro sin $`x`$; combinados con el contenido fijo de los demás bloques dan dos matrices de la familia con las mismas respuestas y distinta salida. Total: $`m\lceil\log_2(s+1)\rceil`$. Para $`m=n`$ ($`s=1`$) da $`n`$, menos que los $`2n-1`$ de la sección 3: las dos construcciones se complementan. No afirmo que $`m\log(n/m)`$ sea exacto en las constantes (la salida 6 muestra, para $`m=16`$, $`n=4096`$, que el galope hace $`273`$ consultas en el peor de las familias medidas, contra $`144`$ de cota inferior).
 
 ## Por qué este enfoque
 

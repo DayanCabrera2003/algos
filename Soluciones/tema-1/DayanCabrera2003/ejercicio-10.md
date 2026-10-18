@@ -70,7 +70,7 @@ Con $`\delta>0`$, la celda del punto $`p`$ es $`c(p)=\lfloor p/\delta\rfloor`$, 
 
 *Demostración.* Dos puntos distintos en $`[k\delta,(k+1)\delta)`$ difieren en *menos* que $`\delta`$ (el intervalo es semiabierto: la diferencia es estrictamente menor que su largo). Pero cualesquiera dos puntos insertados están a distancia $`\ge\delta`$. Entonces no hay dos en la misma celda. ◻
 
-**Cuidado con el borde.** Con intervalos *cerrados* $`[k\delta,(k+1)\delta]`$ el lema es falso: dos puntos a distancia *exactamente* $`\delta`$ pueden compartir celda en los extremos. La parte entera $`\lfloor p/\delta\rfloor`$ elige la celda semiabierta, y las progresiones aritméticas de paso $`\delta`$ (todos los puntos justo en bordes de celda) son el caso de prueba (sección <a href="#sec:exp" data-reference-type="ref" data-reference="sec:exp">5</a>). Además, la división $`\lfloor p/\delta\rfloor`$ tiene que ser *exacta*: con enteros (o racionales) lo es; con coma flotante, $`p/\delta`$ puede redondear un punto del borde a la celda vecina. El programa usa enteros y `Fraction`.
+**Cuidado con el borde.** Con intervalos *cerrados* $`[k\delta,(k+1)\delta]`$ el lema es falso: dos puntos a distancia *exactamente* $`\delta`$ pueden compartir celda en los extremos. La parte entera $`\lfloor p/\delta\rfloor`$ elige la celda semiabierta, y las progresiones aritméticas de paso $`\delta`$ (todos los puntos justo en bordes de celda) son el caso de prueba (sección 5). Además, la división $`\lfloor p/\delta\rfloor`$ tiene que ser *exacta*: con enteros (o racionales) lo es; con coma flotante, $`p/\delta`$ puede redondear un punto del borde a la celda vecina. El programa usa enteros y `Fraction`.
 
 **Cuántas celdas hay que consultar: tres.**
 
@@ -78,7 +78,7 @@ Con $`\delta>0`$, la celda del punto $`p`$ es $`c(p)=\lfloor p/\delta\rfloor`$, 
 
 *Demostración.* $`p\in[k\delta,(k+1)\delta)`$, así que $`p-\delta\ge(k-1)\delta`$ y $`p+\delta<(k+2)\delta`$. Luego $`q\in(p-\delta,p+\delta)\subset((k-1)\delta,(k+2)\delta)`$, que está dentro de las celdas $`k-1`$, $`k`$ y $`k+1`$. ◻
 
-Consultamos $`3`$ celdas, cada una con a lo sumo un punto (lema <a href="#lema:celda" data-reference-type="ref" data-reference="lema:celda">2</a>): $`3`$ accesos a la tabla, $`O(1)`$. En 2D con celdas de lado $`\delta/2`$ eran $`25`$ (C2 §9); en 1D, como la celda tiene largo $`\delta`$ y no $`\delta/2`$, bastan $`3`$. (Con celdas de largo $`\delta/2`$ harían falta $`5`$; con largo $`\delta`$ ya queda a lo sumo un punto por celda por el lema, y menos celdas.)
+Consultamos $`3`$ celdas, cada una con a lo sumo un punto (lema 2): $`3`$ accesos a la tabla, $`O(1)`$. En 2D con celdas de lado $`\delta/2`$ eran $`25`$ (C2 §9); en 1D, como la celda tiene largo $`\delta`$ y no $`\delta/2`$, bastan $`3`$. (Con celdas de largo $`\delta/2`$ harían falta $`5`$; con largo $`\delta`$ ya queda a lo sumo un punto por celda por el lema, y menos celdas.)
 
 ![Figura](figuras/ej10_fig2.png)
 
@@ -112,7 +112,7 @@ Es un borde de verdad: una rejilla de lado $`0`$ no existe ($`\lfloor p/0\rfloor
 
 **Correctitud.**
 
-Invariante $`J`$: tras insertar $`i`$ puntos, $`\delta`$ es la distancia mínima entre ellos, `par` es un par que la alcanza, y la tabla contiene los $`i`$ puntos con lado $`\delta`$ (si $`\delta>0`$). *Inicialización:* con los dos primeros puntos es inmediato. *Mantenimiento:* sea $`p`$ el nuevo punto. La distancia mínima entre los $`i+1`$ puntos es $`\min(\delta,\min_q|p-q|)`$. Si algún $`q`$ está a distancia $`<\delta`$, por el lema <a href="#lema:tres" data-reference-type="ref" data-reference="lema:tres">3</a> está en una de las $`3`$ celdas consultadas y, por el lema <a href="#lema:celda" data-reference-type="ref" data-reference="lema:celda">2</a>, esa celda guarda a lo sumo un punto: lo encontramos y `mejor` es el mínimo entre los consultados. Si $`\mathtt{mejor}<\delta`$ el nuevo $`\delta`$ es correcto y se reconstruye la tabla, y como el nuevo $`\delta`$ es la distancia mínima de los $`i+1`$ puntos, el lema <a href="#lema:celda" data-reference-type="ref" data-reference="lema:celda">2</a> garantiza que no hay colisiones; si no, $`\delta`$ no cambia y se inserta $`p`$ en su celda (vacía, por la misma razón). *Conclusión:* al terminar, $`\delta`$ es la distancia mínima de los $`n`$ puntos.
+Invariante $`J`$: tras insertar $`i`$ puntos, $`\delta`$ es la distancia mínima entre ellos, `par` es un par que la alcanza, y la tabla contiene los $`i`$ puntos con lado $`\delta`$ (si $`\delta>0`$). *Inicialización:* con los dos primeros puntos es inmediato. *Mantenimiento:* sea $`p`$ el nuevo punto. La distancia mínima entre los $`i+1`$ puntos es $`\min(\delta,\min_q|p-q|)`$. Si algún $`q`$ está a distancia $`<\delta`$, por el lema 3 está en una de las $`3`$ celdas consultadas y, por el lema 2, esa celda guarda a lo sumo un punto: lo encontramos y `mejor` es el mínimo entre los consultados. Si $`\mathtt{mejor}<\delta`$ el nuevo $`\delta`$ es correcto y se reconstruye la tabla, y como el nuevo $`\delta`$ es la distancia mínima de los $`i+1`$ puntos, el lema 2 garantiza que no hay colisiones; si no, $`\delta`$ no cambia y se inserta $`p`$ en su celda (vacía, por la misma razón). *Conclusión:* al terminar, $`\delta`$ es la distancia mínima de los $`n`$ puntos.
 
 **Costo esperado: el análisis hacia atrás.**
 
@@ -134,8 +134,61 @@ Contando accesos a la tabla: $`3(n-2)`$ búsquedas, a lo sumo $`n`$ inserciones 
 
 Código: `ej10_par_1d.py`. Cuenta accesos a la tabla (búsquedas, inserciones y reinserciones en reconstrucciones) y reconstrucciones, con aritmética exacta (enteros y `Fraction`). Salida real:
 
-``` default
+<details>
+<summary><code>ej10_salida.txt</code></summary>
+
+```text
+=== 1. Correctitud contra fuerza bruta: enteros, con muchos repetidos y bordes ===
+  20000 instancias (n 2..60, rangos de 3 a 10^9 con repetidos, negativos): rejilla == fuerza bruta == ordenar+recorrer; 11730 con repetidos
+  bordes: P = [0, 5, 10, 15, 20, 25]: 50 permutaciones, distancia 5 correcta: True
+  bordes: P = [0, 7, 14, 21, 28, 35, 42]: 50 permutaciones, distancia 7 correcta: True
+  bordes: P = [0, 5, 10, 15, 20, 26]: 50 permutaciones, distancia 5 correcta: True
+  bordes: P = [1, 2]: 50 permutaciones, distancia 1 correcta: True
+  bordes: P = [4, 4]: 50 permutaciones, distancia 0 correcta: True
+  bordes: P = [0, 100, 101]: 50 permutaciones, distancia 1 correcta: True
+  3000 instancias con racionales (Fraction): correcto; la division por d es exacta, sin errores de redondeo
+  400 progresiones aritmeticas (todas las distancias iguales a delta, puntos justo en los bordes de celda): correcto
+
+=== 2. El caso delta = 0 (repetidos): se devuelve 0 al detectar la colision ===
+  P=[3, 3, 9, 12]                        semilla 0: distancia 0, par (3, 3), busquedas 3, reconstrucciones 0
+  P=[3, 3, 9, 12]                        semilla 1: distancia 0, par (3, 3), busquedas 6, reconstrucciones 1
+  P=[9, 12, 3, 3]                        semilla 0: distancia 0, par (3, 3), busquedas 6, reconstrucciones 1
+  P=[9, 12, 3, 3]                        semilla 1: distancia 0, par (3, 3), busquedas 3, reconstrucciones 0
+  P=[1, 5, 9, 13, 5]                     semilla 0: distancia 0, par (5, 5), busquedas 6, reconstrucciones 0
+  P=[1, 5, 9, 13, 5]                     semilla 1: distancia 0, par (5, 5), busquedas 9, reconstrucciones 0
+  P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,   semilla 0: distancia 0, par (57, 57), busquedas 99, reconstrucciones 3
+  P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,   semilla 1: distancia 0, par (57, 57), busquedas 276, reconstrucciones 3
+  sin repetidos delta > 0 siempre (distancia positiva entre enteros distintos); con repetidos no se construye lado 0:
+  delta = 0 solo se alcanza con un par igual, y el algoritmo termina ahi.
+
+=== 3. Operaciones contra n: rejilla (accesos a la tabla) contra ordenar (comparaciones) ===
+         n  accesos tabla  por punto  reconstr.  2H_n - 3  compar. ordenar     n log2 n  t rejilla  t sorted
+      1000           5868       5.87       11.8      12.0             8672         9966      0.00s     0.00s
+     10000          61581       6.16       17.2      16.6           120176       132877      0.01s     0.00s
+    100000         572829       5.73       20.4      21.2          1531973      1660964      0.06s     0.02s
+   1000000        5512936       5.51       17.0      25.8         18626522     19931569      1.20s     0.28s
+  (acceso de tabla = busqueda + insercion + insercion durante reconstruccion; el orden de ordenar es n log2 n)
+
+=== 4. Reconstrucciones: media sobre muchas permutaciones contra la cota 2 H_n - 3 ===
+       n  permutaciones   media  maximo  2H_n - 3
+      10           4000    2.84       8      2.86
+     100           4000    7.28      18      7.37
+    1000           1000   11.72      23     11.97
+
+=== 5. Sin el azar: un orden adversarial fuerza una reconstruccion por insercion ===
+  n=200: orden adversarial: 198 reconstrucciones, 20097 inserciones en reconstrucciones (~ n^2/2 = 20000);  barajado: 11 reconstrucciones, 670 inserciones
+  n=800: orden adversarial: 798 reconstrucciones, 320397 inserciones en reconstrucciones (~ n^2/2 = 320000);  barajado: 12 reconstrucciones, 1288 inserciones
+
+=== 6. Otra salida del modelo: radix sort sobre enteros de rango acotado ===
+         n        U = n^2  ops radix (2 pasadas + recorrido)  por punto     n log2 n
+      1000        1000000                               8999       9.00         9966
+     10000      100000000                              89999       9.00       132877
+    100000    10000000000                             899999       9.00      1660964
+   1000000  1000000000000                            8999999       9.00     19931569
+  2000 instancias pequenas (con repetidos): radix + recorrido == fuerza bruta
 ```
+
+</details>
 
 **Qué se ve.**
 
