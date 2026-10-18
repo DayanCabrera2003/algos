@@ -6,7 +6,7 @@
 
 ## Respuesta corta
 
-- **La cota del lema:** $`\sum c_k\le n(3\log_2n+1)+\log_2 n!\;\approx\;4\,n\log_2n-1{,}44\,n`$. Con los rangos reales de la ejecución se afina a $`\sum_k[3(\log_2n-r_k)+1]`$, porque $`\Phi_0-\Phi_{\text{final}}=0`$.
+- **La cota del lema:** $`\sum c_k\le n(3\log_2n+1)+\log_2 n!\;\approx\;4\,n\log_2n-0{,}44\,n`$. Con los rangos reales de la ejecución se afina a $`\sum_k[3(\log_2n-r_k)+1]`$, porque $`\Phi_0-\Phi_{\text{final}}=0`$.
 
 - **Lo medido:** el costo total exacto es $`4{,}41\,n`$ para $`n`$ grande ($`4472`$ rotaciones para $`n=1023`$, contra una cota de $`40\,468`$ y una cota fina de $`21\,024`$).
 
@@ -35,7 +35,7 @@ En el acceso $`k`$ se accede a la clave $`k`$, el nodo $`x_k`$, con $`r_k=r(x_k)
 
 Con $`r_k\ge0`$ y $`\Phi_{\text{final}}\ge0`$ (como en C4),
 ``` math
-\sum_kc_k\ \le\ 3n\log_2n+n+\log_2n!\ \approx\ 4\,n\log_2n-1{,}44\,n .
+\sum_kc_k\ \le\ 3n\log_2n+n+\log_2n!\ \approx\ 4\,n\log_2n-0{,}44\,n .
 ```
 (Con $`\Phi_{\text{final}}\ge\log_2n`$, el rango de la raíz, se resta $`\log_2n`$; no cambia el orden.)
 
@@ -57,7 +57,7 @@ Costo real exacto (rotaciones; $`1`$ si ya es la raíz), para el splay de C4 des
 | 65535 | 289254 | 4,41 | 4165232 | 14,40 | 2098008 | 7,25 |
 | 262143 | 1157200 | 4,41 | 18758251 | 16,21 | 9399203 | 8,12 |
 
-La reproducción de la tabla de C4 §6 (tres rondas, costo por acceso) da $`4{,}2`$, $`4{,}2`$, $`4{,}3`$, $`4{,}4`$ para $`n=100,200,400,800`$, igual a C4 (salida 3). Aquí, con una sola ronda, el costo por acceso $`T(n)/n`$ pasa de $`3{,}2`$ ($`n=15`$) a $`4{,}37`$ ($`n=1023`$) y se estabiliza cerca de $`4{,}41`$.
+La reproducción de la tabla de C4 §6 (tres rondas, costo por acceso) da $`4{,}2`$, $`4{,}2`$, $`4{,}3`$, $`4{,}4`$ para $`n=100,200,400,800`$, igual a C4 (salida 3). Eso no depende de cuántas rondas se hagan: por el lema 2, al final de cada ronda el árbol vuelve a ser `camino(n)`, el mismo del que partió, así que todas las rondas hacen exactamente las mismas rotaciones y el promedio de tres rondas es el costo de una sola. Aquí, con una sola ronda, el costo por acceso $`T(n)/n`$ pasa de $`3{,}2`$ ($`n=15`$) a $`4{,}37`$ ($`n=1023`$) y se estabiliza cerca de $`4{,}41`$.
 
 ![Figura](figuras/ej13_fig1.png)
 
