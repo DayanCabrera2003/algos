@@ -1,5 +1,4 @@
-# Ejercicio 2: invariante, potencial y cota de información de la búsqueda
-binaria
+# Ejercicio 2: invariante, potencial y cota de información de la búsqueda binaria
 
 ## Enunciado
 
